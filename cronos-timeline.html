@@ -1,0 +1,2155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cronos · Líneas contemporáneas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #12110f;
+    --bg-2: #1a1814;
+    --ink: #ebe6db;
+    --ink-dim: #8a8478;
+    --ink-faint: #524d43;
+    --line: #2a2721;
+    --amber: #d4a24c;
+    --amber-bright: #f0b962;
+    --rust: #b85c3c;
+    --sage: #7a8c6a;
+    --sky: #6a8a9c;
+    --plum: #9c6a8a;
+    --steel: #5b8fa8;
+    --steel-bright: #7abfdb;
+    --latam: #6aabdc;
+    --futbol: #5aaa70;
+  }
+
+  /* ── LIGHT THEME ───────────────────────────────────────────── */
+  body.theme-light {
+    --bg: #f5f0e6;
+    --bg-2: #ede8da;
+    --ink: #1f1c17;
+    --ink-dim: #6b6358;
+    --ink-faint: #a09488;
+    --line: #d5cfc3;
+    --amber: #b07a1a;
+    --amber-bright: #c8921e;
+    --rust: #9c3e22;
+    --sage: #566645;
+    --sky: #3d6478;
+    --plum: #7a4868;
+    --steel: #3a6f8a;
+    --steel-bright: #5294aa;
+    --latam: #2a7eaa;
+  }
+  body.theme-light::before { background-image: none; }
+  body.theme-light::after  { display: none; }
+  body.theme-light .anchor-band { background: rgba(176, 122, 26, 0.15); }
+  body.theme-light .anchor-band.secondary { background: rgba(58, 111, 138, 0.12); }
+
+  /* ── FONT SIZES ────────────────────────────────────────────── */
+  /* Small */
+  body.font-sm .event .label          { font-size: 11px; }
+  body.font-sm .year-tick             { font-size: 10px; }
+  body.font-sm .detail-panel h3       { font-size: 24px; }
+  body.font-sm .detail-panel .relation .primary { font-size: 16px; }
+  body.font-sm .detail-panel .description       { font-size: 13px; }
+  body.font-sm .detail-panel .years   { font-size: 11px; }
+  /* Large */
+  body.font-lg .event .label          { font-size: 17px; }
+  body.font-lg .year-tick             { font-size: 14px; }
+  body.font-lg .detail-panel h3       { font-size: 42px; }
+  body.font-lg .detail-panel .relation .primary { font-size: 26px; }
+  body.font-lg .detail-panel .description       { font-size: 18px; }
+  body.font-lg .detail-panel .years   { font-size: 15px; }
+
+  /* ── SETTINGS ROW ──────────────────────────────────────────── */
+  .settings-row {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    margin-top: 4px;
+  }
+  .settings-row label { margin-bottom: 0; white-space: nowrap; }
+  .settings-inline { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+
+  .theme-btns, .fontsize-btns {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--line);
+  }
+  .theme-btn, .fontsize-btn {
+    padding: 7px 14px;
+    background: transparent;
+    border: none;
+    color: var(--ink-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .theme-btn + .theme-btn,
+  .fontsize-btn + .fontsize-btn { border-left: 1px solid var(--line); }
+  .theme-btn.active, .fontsize-btn.active { background: var(--amber); color: var(--bg); }
+  .theme-btn:not(.active):hover, .fontsize-btn:not(.active):hover { color: var(--ink); }
+  .fontsize-btn[data-size="sm"] { font-size: 10px; }
+  .fontsize-btn[data-size="lg"] { font-size: 13px; font-weight: 700; }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Fraunces', Georgia, serif;
+    font-optical-sizing: auto;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse at top left, rgba(212, 162, 76, 0.04), transparent 50%),
+      radial-gradient(ellipse at bottom right, rgba(184, 92, 60, 0.03), transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3CfeColorMatrix values='0 0 0 0 0.9 0 0 0 0 0.85 0 0 0 0 0.75 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: overlay;
+    opacity: 0.5;
+  }
+
+  .container {
+    position: relative;
+    z-index: 2;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 48px 40px 80px;
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 48px;
+  }
+
+  .brand {
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--amber);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+  }
+
+  .brand span { color: var(--ink-dim); }
+
+  .meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-faint);
+    letter-spacing: 0.1em;
+  }
+
+  .hero {
+    margin-bottom: 64px;
+    display: flex;
+    gap: 72px;
+    align-items: flex-start;
+  }
+
+  .hero-left { flex: 1 1 55%; }
+
+  .hero-right {
+    flex: 0 1 320px;
+    padding-top: 8px;
+    border-left: 1px solid var(--line);
+    padding-left: 40px;
+  }
+
+  .hero-origin-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 16px;
+  }
+
+  .hero-origin p {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--ink-dim);
+    margin-bottom: 12px;
+    font-family: 'Fraunces', Georgia, serif;
+  }
+
+  .hero-origin .years-badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--amber);
+    letter-spacing: 0.1em;
+    border: 1px solid var(--amber);
+    padding: 4px 10px;
+    margin-top: 8px;
+    opacity: 0.8;
+  }
+
+  @media (max-width: 900px) {
+    .hero { flex-direction: column; gap: 40px; }
+    .hero-right { border-left: none; border-top: 1px solid var(--line); padding-left: 0; padding-top: 32px; }
+  }
+
+  h1 {
+    font-size: clamp(48px, 7vw, 96px);
+    line-height: 0.95;
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+    font-variation-settings: "opsz" 144;
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--amber);
+    font-weight: 400;
+  }
+
+  .tagline {
+    font-size: 18px;
+    color: var(--ink-dim);
+    line-height: 1.6;
+    max-width: 560px;
+    font-weight: 300;
+  }
+
+  .controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    padding: 32px;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    margin-bottom: 48px;
+    position: relative;
+  }
+
+  .controls::before {
+    content: '01';
+    position: absolute;
+    top: -10px;
+    left: 24px;
+    background: var(--bg);
+    padding: 0 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--amber);
+    letter-spacing: 0.15em;
+  }
+
+  .control-group label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    margin-bottom: 12px;
+  }
+
+  .anchor-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 16px;
+    border: 1px solid var(--line);
+  }
+
+  .anchor-tabs button {
+    flex: 1;
+    padding: 10px 14px;
+    background: transparent;
+    border: none;
+    color: var(--ink-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .anchor-tabs button.active {
+    background: var(--amber);
+    color: var(--bg);
+  }
+
+  .anchor-tabs button:not(.active):hover {
+    color: var(--ink);
+    background: rgba(212, 162, 76, 0.05);
+  }
+
+  /* Period selector */
+  .period-group { margin-bottom: 14px; }
+  .period-group-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-faint);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .period-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: 1px solid var(--line);
+    color: var(--ink-dim);
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 13px;
+    padding: 7px 11px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s;
+  }
+  .period-btn:hover { border-color: var(--ink-faint); color: var(--ink); }
+  .period-btn.active { border-color: var(--amber); color: var(--amber); }
+  .period-btn .period-years {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-faint);
+  }
+  .period-btn.active .period-years { color: var(--amber); opacity: 0.7; }
+
+  .input-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  input[type="number"], input[type="text"], select {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    padding: 12px 14px;
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  input[type="text"] { font-size: 14px; }
+
+  input[type="number"]:focus, input[type="text"]:focus, select:focus {
+    border-color: var(--amber);
+  }
+
+  select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23d4a24c' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 36px;
+  }
+
+  .life-block {
+    padding-left: 12px;
+    border-left: 2px solid var(--amber);
+    margin-bottom: 16px;
+  }
+
+  .life-block.secondary {
+    border-left-color: var(--steel);
+    margin-bottom: 0;
+  }
+
+  .life-block.secondary input[type="text"]:focus,
+  .life-block.secondary input[type="number"]:focus {
+    border-color: var(--steel);
+  }
+
+  .categories {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .cat-chip {
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--ink-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .cat-chip .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.5;
+  }
+
+  .cat-chip.active { color: var(--ink); border-color: var(--ink-dim); }
+  .cat-chip.active .dot { opacity: 1; }
+  .cat-chip[data-cat="tech"].active    { color: var(--amber); border-color: var(--amber); }
+  .cat-chip[data-cat="war"].active     { color: var(--rust);  border-color: var(--rust);  }
+  .cat-chip[data-cat="science"].active { color: var(--sage);  border-color: var(--sage);  }
+  .cat-chip[data-cat="sport"].active   { color: var(--sky);   border-color: var(--sky);   }
+  .cat-chip[data-cat="everyday"].active{ color: var(--plum);  border-color: var(--plum);  }
+  .cat-chip[data-cat="latam"].active   { color: var(--latam);  border-color: var(--latam);  }
+  .cat-chip[data-cat="futbol"].active  { color: var(--futbol); border-color: var(--futbol); }
+
+  .anchor-summary {
+    padding: 24px 0;
+    margin-bottom: 32px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .anchor-summary .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 4px;
+  }
+
+  .anchor-summary .value         { font-size: 28px; font-weight: 400; font-style: italic; color: var(--amber); }
+  .anchor-summary .value.steel   { color: var(--steel); }
+  .anchor-summary .value.small   { font-size: 18px; color: var(--ink); font-style: normal; }
+  .anchor-summary .value.overlap { font-size: 18px; color: var(--sage); font-style: italic; }
+
+  .timeline-wrapper { position: relative; margin-bottom: 48px; }
+
+  .timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .timeline-header h2 {
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+  }
+
+  .timeline-header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .timeline-header .count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-faint);
+  }
+
+  /* Share button */
+  .share-btn {
+    padding: 8px 16px;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .share-btn:hover {
+    border-color: var(--amber);
+    color: var(--amber);
+  }
+
+  /* Presentation / projector button */
+  .present-btn {
+    padding: 8px 16px;
+    background: transparent;
+    border: 1px solid var(--amber);
+    color: var(--amber);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .present-btn:hover { background: var(--amber); color: var(--bg); }
+
+  /* ── PRESENTATION MODE ─────────────────────────────────────── */
+  body.presentation .container { max-width: 100%; padding: 0; }
+  body.presentation header      { display: none; }
+  body.presentation .controls   { display: none; }
+  body.presentation .anchor-summary { display: none; }
+  body.presentation .footer-note    { display: none; }
+
+  body.presentation .timeline-wrapper {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  body.presentation .timeline-header {
+    padding: 20px 32px 16px;
+    margin-bottom: 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    flex-shrink: 0;
+  }
+
+  body.presentation .timeline-header h2 { display: none; }
+  body.presentation .pres-anchor-title  { display: flex !important; }
+
+  body.presentation .pres-anchor-title {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+  }
+
+  body.presentation .pres-anchor-name {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 28px;
+    font-style: italic;
+    color: var(--amber);
+    font-weight: 400;
+  }
+
+  body.presentation .pres-anchor-years {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--ink-dim);
+    letter-spacing: 0.1em;
+  }
+
+  body.presentation .timeline-scroll {
+    flex: 1;
+    border: none;
+    padding: 32px 0 24px;
+  }
+
+  body.presentation .timeline { height: 760px; }
+
+  body.presentation .event .label {
+    font-size: 13px;
+    letter-spacing: 0.04em;
+  }
+
+  body.presentation .year-tick { font-size: 13px; }
+
+  /* Exit button overlay */
+  .pres-exit {
+    display: none;
+    position: fixed;
+    top: 16px;
+    right: 20px;
+    z-index: 9999;
+    padding: 8px 16px;
+    background: rgba(18,17,15,0.85);
+    border: 1px solid var(--line);
+    color: var(--ink-faint);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  body.presentation .pres-exit { display: block; }
+  .pres-exit:hover { border-color: var(--ink-dim); color: var(--ink); }
+
+  .timeline-scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    border: 1px solid var(--line);
+    background: var(--bg-2);
+    padding: 24px 0 20px;
+    position: relative;
+  }
+
+  /* Category lane labels */
+  .cat-lane-label {
+    position: absolute;
+    left: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    pointer-events: none;
+    white-space: nowrap;
+    opacity: 0.75;
+    line-height: 1;
+  }
+
+  .cat-lane-sep {
+    position: absolute;
+    left: 0; right: 0;
+    height: 1px;
+    background: var(--line);
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .timeline-scroll::-webkit-scrollbar { height: 8px; }
+  .timeline-scroll::-webkit-scrollbar-track { background: var(--bg); }
+  .timeline-scroll::-webkit-scrollbar-thumb { background: var(--line); }
+  .timeline-scroll::-webkit-scrollbar-thumb:hover { background: var(--ink-faint); }
+
+  .timeline { position: relative; height: 680px; min-width: 100px; /* JS overrides both */ }
+
+  .year-axis {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 32px;
+    border-top: 1px solid var(--line);
+  }
+
+  .year-tick {
+    position: absolute;
+    bottom: 0;
+    height: 100%;
+    border-left: 1px solid var(--line);
+    padding: 8px 0 0 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--ink-faint);
+    letter-spacing: 0.08em;
+  }
+
+  .anchor-marker {
+    position: absolute;
+    top: 0; bottom: 32px;
+    width: 1px;
+    background: var(--amber);
+    z-index: 5;
+  }
+
+  .anchor-marker.end           { opacity: 0.5; }
+  .anchor-marker.secondary     { background: var(--steel); }
+  .anchor-marker.secondary.end { background: var(--steel); opacity: 0.5; }
+
+  .anchor-marker::before {
+    content: attr(data-label);
+    position: absolute;
+    top: 0; left: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--amber);
+    white-space: nowrap;
+  }
+
+  .anchor-marker.secondary::before { color: var(--steel); }
+
+  .anchor-band {
+    position: absolute;
+    top: 0; bottom: 32px;
+    background: rgba(212, 162, 76, 0.06);
+    border-left: 1px solid rgba(212, 162, 76, 0.3);
+    border-right: 1px solid rgba(212, 162, 76, 0.3);
+    z-index: 1;
+  }
+
+  .anchor-band.secondary {
+    background: rgba(91, 143, 168, 0.06);
+    border-left: 1px solid rgba(91, 143, 168, 0.3);
+    border-right: 1px solid rgba(91, 143, 168, 0.3);
+  }
+
+  .event { position: absolute; z-index: 3; cursor: pointer; }
+
+  .event.point .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--color);
+    box-shadow: 0 0 0 3px var(--bg-2);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .event.point:hover .dot {
+    transform: scale(1.4);
+    box-shadow: 0 0 0 4px var(--bg-2), 0 0 12px var(--color);
+  }
+
+  .event.span .bar {
+    height: 6px;
+    background: var(--color);
+    border-radius: 1px;
+    opacity: 0.7;
+    transition: opacity 0.2s, height 0.2s;
+  }
+
+  .event.span:hover .bar { opacity: 1; height: 8px; }
+
+  .event .label {
+    position: absolute;
+    left: 14px; top: -4px;
+    font-size: 13px;
+    color: var(--ink);
+    white-space: nowrap;
+    font-weight: 400;
+  }
+
+  .event.span .label { left: 0; top: -22px; }
+
+  .event .label .year {
+    color: var(--ink-faint);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    margin-left: 8px;
+    letter-spacing: 0.08em;
+  }
+
+  .event:hover .label { color: var(--amber-bright); }
+
+  .event.before-anchor .label,
+  .event.before-anchor .dot,
+  .event.before-anchor .bar { opacity: 0.45; }
+
+  /* Detail panel */
+  .detail-panel {
+    position: fixed;
+    right: -400px; top: 0; bottom: 0;
+    width: 380px;
+    background: var(--bg-2);
+    border-left: 1px solid var(--line);
+    padding: 48px 32px 32px;
+    transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+    overflow-y: auto;
+  }
+
+  .detail-panel.open { right: 0; }
+
+  .detail-panel .close {
+    position: absolute;
+    top: 20px; right: 20px;
+    background: none; border: none;
+    color: var(--ink-dim);
+    font-size: 24px; cursor: pointer; line-height: 1;
+  }
+
+  .detail-panel .cat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em;
+    text-transform: uppercase; margin-bottom: 12px;
+  }
+
+  .detail-panel h3 {
+    font-size: 32px; line-height: 1.1;
+    font-weight: 400; margin-bottom: 8px; letter-spacing: -0.01em;
+  }
+
+  .detail-panel .years {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; color: var(--ink-dim);
+    margin-bottom: 24px; letter-spacing: 0.08em;
+  }
+
+  .detail-panel .relation {
+    padding: 20px;
+    background: var(--bg);
+    border-left: 2px solid var(--amber);
+    margin-bottom: 12px;
+  }
+
+  .detail-panel .relation.secondary { border-left-color: var(--steel); }
+
+  .detail-panel .relation .life-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--amber); margin-bottom: 8px;
+  }
+
+  .detail-panel .relation.secondary .life-name { color: var(--steel); }
+
+  .detail-panel .relation .primary {
+    font-size: 20px; font-style: italic; color: var(--amber);
+    line-height: 1.3; margin-bottom: 8px;
+  }
+
+  .detail-panel .relation.secondary .primary { color: var(--steel); }
+
+  .detail-panel .relation .rel-secondary {
+    font-size: 13px; color: var(--ink-dim); line-height: 1.5;
+  }
+
+  .detail-panel .description {
+    font-size: 15px; line-height: 1.7; color: var(--ink-dim); margin-top: 8px;
+  }
+
+  /* Share modal */
+  .share-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(18, 17, 15, 0.85);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+  }
+
+  .share-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .share-modal {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    width: 640px;
+    max-width: 95vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 40px;
+    position: relative;
+  }
+
+  .share-modal .close {
+    position: absolute;
+    top: 16px; right: 20px;
+    background: none; border: none;
+    color: var(--ink-dim); font-size: 24px;
+    cursor: pointer; line-height: 1;
+  }
+
+  .share-modal-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--amber);
+    margin-bottom: 24px;
+  }
+
+  .share-preview {
+    width: 100%;
+    margin-bottom: 24px;
+    border: 1px solid var(--line);
+    overflow: hidden;
+    line-height: 0;
+  }
+
+  .share-preview canvas {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .share-text-box {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 16px 20px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--ink-dim);
+    white-space: pre-wrap;
+    margin-bottom: 24px;
+    max-height: 140px;
+    overflow-y: auto;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.03em;
+  }
+
+  .share-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .share-action {
+    padding: 12px 16px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--ink-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+  }
+
+  .share-action:hover { color: var(--ink); border-color: var(--ink-dim); }
+
+  .share-action.whatsapp:hover { background: rgba(37, 211, 102, 0.12); border-color: #25d366; color: #25d366; }
+  .share-action.twitter:hover  { background: rgba(29, 161, 242, 0.08); border-color: #1da1f2; color: #1da1f2; }
+  .share-action.copy-btn:hover { background: rgba(212, 162, 76, 0.1);  border-color: var(--amber); color: var(--amber); }
+  .share-action.download:hover { background: rgba(122, 140, 106, 0.1); border-color: var(--sage); color: var(--sage); }
+
+  .loading, .error-state {
+    padding: 48px; text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: var(--ink-dim);
+    letter-spacing: 0.15em; text-transform: uppercase;
+  }
+
+  .error-state {
+    color: var(--rust); border: 1px solid var(--rust);
+    background: rgba(184, 92, 60, 0.05);
+  }
+
+  .error-state .detail {
+    margin-top: 12px; font-size: 11px; color: var(--ink-dim);
+    text-transform: none; letter-spacing: 0.05em; line-height: 1.6;
+  }
+
+  .footer-note {
+    margin-top: 48px; padding-top: 32px;
+    border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.15em;
+    color: var(--ink-faint); text-transform: uppercase;
+  }
+
+  @media (max-width: 768px) {
+    .container { padding: 32px 20px 60px; }
+    .controls { grid-template-columns: 1fr; gap: 24px; padding: 24px; }
+    .anchor-summary { flex-direction: column; align-items: flex-start; }
+    .detail-panel { width: 100%; }
+    .share-actions { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="brand">CRONOS <span>· líneas contemporáneas</span></div>
+    <div class="meta">PROTOTIPO · v1.2</div>
+  </header>
+
+  <div class="hero">
+    <div class="hero-left">
+      <h1>¿A qué fuiste <em>contemporáneo</em>?</h1>
+      <p class="tagline">Elegí una vida, un invento o un evento como línea principal. Ubicá todo lo demás en relación a esa ancla — qué ya existía, qué llegó después, y a cuántos años estuviste de cada hito.</p>
+    </div>
+    <div class="hero-right">
+      <div class="hero-origin">
+        <div class="hero-origin-label">Cómo nació la idea</div>
+        <p>Mi abuela Sebastiana vivió 101 años — de 1913 a 2014 — y siempre quise saber a qué fue contemporánea.</p>
+        <p>Nació antes de que existiera la radio. Vio llegar la televisión, la penicilina, el hombre en la Luna, internet. Murió con un smartphone en el mundo.</p>
+        <p>Cronos nació para visualizar eso: no la historia como lista de fechas, sino como experiencia vivida.</p>
+        <span class="years-badge">1913 — 2014</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="app">
+    <div class="loading">Cargando dataset…</div>
+  </div>
+</div>
+
+<!-- Detail panel -->
+<div class="detail-panel" id="detail-panel">
+  <button class="close" id="close-panel">×</button>
+  <div id="detail-content"></div>
+</div>
+
+<!-- Presentation exit button -->
+<button class="pres-exit" id="pres-exit">✕ salir</button>
+
+<!-- Share modal -->
+<div class="share-overlay" id="share-overlay">
+  <div class="share-modal">
+    <button class="close" id="close-share">×</button>
+    <div class="share-modal-title">↗ Compartir esta vista</div>
+    <div class="share-preview" id="share-preview"></div>
+    <div class="share-text-box" id="share-text-box"></div>
+    <div class="share-actions">
+      <button class="share-action whatsapp" id="share-whatsapp">WhatsApp</button>
+      <button class="share-action twitter"  id="share-twitter">Twitter / X</button>
+      <button class="share-action copy-btn" id="share-copy">Copiar texto</button>
+      <button class="share-action download" id="share-download">Descargar imagen</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// =========================================================================
+// STATE
+// =========================================================================
+const state = {
+  mode: 'life',
+  birthYear: 1913,
+  deathYear: 2014,
+  name1: '',
+  birth2Year: 1979,
+  death2Year: 2026,
+  name2: '',
+  anchorEventId: 'ww2',
+  periodId: 'ind_industrial',
+  activeCats: new Set(),
+  events: [],
+  categories: {},
+  periods: [],
+  theme: localStorage.getItem('cronos-theme') || 'dark',
+  fontSize: localStorage.getItem('cronos-fontsize') || 'md',
+};
+
+// =========================================================================
+// DATA LOADING
+// =========================================================================
+async function loadData() {
+  try {
+    const response = await fetch('./events.json');
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    const data = await response.json();
+    state.events = data.events;
+    state.categories = data.categories;
+    state.periods = data.periods || [];
+    state.activeCats = new Set(Object.keys(data.categories));
+    bootUI();
+  } catch (err) {
+    document.getElementById('app').innerHTML = `
+      <div class="error-state">
+        ⚠ No se pudo cargar events.json
+        <div class="detail">
+          ${err.message}<br><br>
+          Servir desde un servidor web:&nbsp;
+          <code style="color:var(--amber)">python -m http.server 8000</code><br>
+          y abrir <code style="color:var(--amber)">http://localhost:8000/cronos-timeline.html</code>
+        </div>
+      </div>`;
+  }
+}
+
+// =========================================================================
+// HELPERS
+// =========================================================================
+function getAnchor() {
+  if (state.mode === 'life' || state.mode === 'compare') {
+    return { start: state.birthYear, end: state.deathYear, title: state.name1 || 'Vida A' };
+  }
+  if (state.mode === 'period') {
+    const p = state.periods.find(p => p.id === state.periodId) || state.periods[0];
+    if (p) return { start: p.start, end: p.end, title: p.title, period: p };
+    return { start: 1760, end: 1840, title: 'Período' };
+  }
+  const ev = state.events.find(e => e.id === state.anchorEventId);
+  return { start: ev.start, end: ev.end || ev.start, title: ev.title, event: ev };
+}
+
+function getSecondAnchor() {
+  return { start: state.birth2Year, end: state.death2Year, title: state.name2 || 'Vida B' };
+}
+
+function describeRelation(event, anchor, name) {
+  const eventYear = event.start;
+  const { start: anchorStart, end: anchorEnd } = anchor;
+  const isLifeMode = state.mode === 'life' || state.mode === 'compare';
+
+  if (state.mode === 'period') {
+    const pTitle = anchor.title;
+    if (eventYear < anchorStart) {
+      const diff = anchorStart - eventYear;
+      return {
+        primary: `${diff} año${diff !== 1 ? 's' : ''} antes del período`,
+        secondary: `Cuando comenzó "${pTitle}" (${anchorStart}), este hito ya existía desde hacía ${diff} año${diff !== 1 ? 's' : ''}.`,
+        status: 'before'
+      };
+    } else if (eventYear > anchorEnd) {
+      const diff = eventYear - anchorEnd;
+      return {
+        primary: `${diff} año${diff !== 1 ? 's' : ''} después del período`,
+        secondary: `Llegó ${diff} año${diff !== 1 ? 's' : ''} después del fin de "${pTitle}" (${anchorEnd}).`,
+        status: 'after'
+      };
+    } else {
+      const yearIntoP = eventYear - anchorStart;
+      return {
+        primary: `Durante "${pTitle}"`,
+        secondary: yearIntoP === 0
+          ? `Ocurrió en el año de inicio del período.`
+          : `Ocurrió en el año ${yearIntoP} del período (${eventYear}).`,
+        status: 'during'
+      };
+    }
+  }
+
+  if (isLifeMode) {
+    if (eventYear < anchorStart) {
+      const diff = anchorStart - eventYear;
+      return {
+        primary: name ? `${diff} año${diff !== 1 ? 's' : ''} antes del nacimiento de ${name}`
+                      : `Sucedió ${diff} año${diff !== 1 ? 's' : ''} antes de tu nacimiento`,
+        secondary: name ? `Cuando nació ${name}, ya existía desde hacía ${diff} año${diff !== 1 ? 's' : ''}.`
+                        : `Cuando naciste, ya existía desde hacía ${diff} año${diff !== 1 ? 's' : ''}.`,
+        status: 'before'
+      };
+    } else if (eventYear > anchorEnd) {
+      const diff = eventYear - anchorEnd;
+      return {
+        primary: name ? `${diff} año${diff !== 1 ? 's' : ''} después de ${name}`
+                      : `Ocurrió ${diff} año${diff !== 1 ? 's' : ''} después`,
+        secondary: name ? `${name} no llegó a verlo: ocurrió ${diff} año${diff !== 1 ? 's' : ''} después.`
+                        : `No llegaste a verlo: sucedió ${diff} año${diff !== 1 ? 's' : ''} después del fin de tu línea.`,
+        status: 'after'
+      };
+    } else {
+      const age = eventYear - anchorStart;
+      return {
+        primary: name ? `${name} tenía ${age} año${age !== 1 ? 's' : ''}`
+                      : `Tenías ${age} año${age !== 1 ? 's' : ''}`,
+        secondary: name ? `Este hito ocurrió durante la vida de ${name}, cuando tenía ${age} año${age !== 1 ? 's' : ''}.`
+                        : `Este hito ocurrió durante tu vida, cuando tenías ${age} año${age !== 1 ? 's' : ''}.`,
+        status: 'during'
+      };
+    }
+  } else {
+    if (eventYear < anchorStart) {
+      const diff = anchorStart - eventYear;
+      return { primary: `${diff} año${diff !== 1 ? 's' : ''} antes`, secondary: `Precedió a "${anchor.title}" por ${diff} año${diff !== 1 ? 's' : ''}.`, status: 'before' };
+    } else if (eventYear > anchorEnd) {
+      const diff = eventYear - anchorEnd;
+      return { primary: `${diff} año${diff !== 1 ? 's' : ''} después`, secondary: `Llegó ${diff} año${diff !== 1 ? 's' : ''} después del fin de "${anchor.title}".`, status: 'after' };
+    } else {
+      return { primary: `Contemporáneo`, secondary: `Sucedió durante "${anchor.title}".`, status: 'during' };
+    }
+  }
+}
+
+// =========================================================================
+// SHARE — TEXT
+// =========================================================================
+function generateShareText() {
+  const anchor  = getAnchor();
+  const anchor2 = state.mode === 'compare' ? getSecondAnchor() : null;
+  let text = '🕰️ Cronos · Líneas contemporáneas\n\n';
+
+  if (state.mode === 'life') {
+    const name  = state.name1 || null;
+    const years = anchor.end - anchor.start;
+    text += name ? `${name} nació en ${anchor.start} y vivió ${years} años.\n\n`
+                 : `Una vida: ${anchor.start} — ${anchor.end} (${years} años).\n\n`;
+
+    const before  = state.events.filter(e => e.start < anchor.start);
+    const during  = state.events.filter(e => e.start >= anchor.start && e.start <= anchor.end);
+    const after   = state.events.filter(e => e.start > anchor.end);
+
+    const recentBefore = before.slice(-3);
+    if (recentBefore.length) {
+      const prefix = name ? `Cuando nació ${name}` : 'Al nacer';
+      text += `${prefix}, ya existían: ${recentBefore.map(e => `${e.title} (desde hacía ${anchor.start - e.start} años)`).join(', ')}.\n\n`;
+    }
+
+    const picks = during.slice(0, 4);
+    if (picks.length) {
+      const prefix = name ? `Durante la vida de ${name} llegaron` : 'Durante su vida llegaron';
+      text += `${prefix}: ${picks.map(e => e.title).join(', ')}.\n\n`;
+    }
+
+    if (after.length) {
+      text += `No llegó a ver: ${after.slice(0, 2).map(e => `${e.title} (${e.start})`).join(', ')}.\n\n`;
+    }
+
+  } else if (state.mode === 'compare') {
+    const label1 = state.name1 || 'Vida A';
+    const label2 = state.name2 || 'Vida B';
+    const overlapStart = Math.max(anchor.start, anchor2.start);
+    const overlapEnd   = Math.min(anchor.end,   anchor2.end);
+    const overlap      = overlapEnd - overlapStart;
+
+    text += `Comparación generacional:\n`;
+    text += `👤 ${label1}: ${anchor.start} — ${anchor.end} (${anchor.end - anchor.start} años)\n`;
+    text += `👤 ${label2}: ${anchor2.start} — ${anchor2.end} (${anchor2.end - anchor2.start} años)\n\n`;
+
+    if (overlap > 0) {
+      text += `Compartieron ${overlap} años juntos.\n\n`;
+      const age1at2 = anchor2.start - anchor.start;
+      if (age1at2 > 0) {
+        const seen = state.events.filter(e => e.start >= anchor.start && e.start < anchor2.start).slice(0, 3);
+        if (seen.length) text += `Cuando nació ${label2}, ${label1} ya tenía ${age1at2} años y había visto llegar: ${seen.map(e => e.title).join(', ')}.\n\n`;
+      }
+    } else {
+      text += `Sus vidas no se solaparon.\n\n`;
+    }
+
+  } else if (state.mode === 'period') {
+    const p = anchor.period;
+    const duration = p.end - p.start;
+    text += `Período: ${p.title} (${p.start}–${p.end}, ${duration} años)\n\n`;
+    text += `${p.desc}\n\n`;
+
+    const during = state.events.filter(e => state.activeCats.has(e.cat) && e.start >= p.start && e.start <= p.end);
+    const before = state.events.filter(e => state.activeCats.has(e.cat) && e.start < p.start).slice(-3);
+
+    if (before.length) text += `Ya existía antes del período: ${before.map(e => e.title).join(', ')}.\n\n`;
+    if (during.length) text += `Pasó durante el período: ${during.slice(0, 5).map(e => `${e.title} (${e.start})`).join(', ')}.\n\n`;
+
+  } else {
+    const ev = anchor.event;
+    text += `${ev.title} (${ev.start}${ev.end ? '–' + ev.end : ''})\n\n${ev.desc}\n\n`;
+  }
+
+  text += '¿A qué fuiste contemporáneo vos?';
+  return text;
+}
+
+// =========================================================================
+// SHARE — CANVAS IMAGE
+// =========================================================================
+function buildShareCanvas() {
+  const W = 900, H = 500;
+  const canvas = document.createElement('canvas');
+  canvas.width  = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  const C = {
+    bg: '#12110f', bg2: '#1a1814',
+    ink: '#ebe6db', dim: '#8a8478', faint: '#524d43', line: '#2a2721',
+    amber: '#d4a24c', steel: '#5b8fa8', sage: '#7a8c6a',
+    rust: '#b85c3c', sky: '#6a8a9c', plum: '#9c6a8a',
+  };
+  const PAD = 48;
+
+  // Background
+  ctx.fillStyle = C.bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // Amber top strip
+  ctx.fillStyle = C.amber;
+  ctx.fillRect(0, 0, W, 3);
+
+  // Branding
+  ctx.font = 'bold 11px monospace';
+  ctx.fillStyle = C.amber;
+  ctx.fillText('CRONOS', PAD, 44);
+  const bw = ctx.measureText('CRONOS').width;
+  ctx.fillStyle = C.dim;
+  ctx.fillText(' · LÍNEAS CONTEMPORÁNEAS', PAD + bw, 44);
+
+  ctx.font = '10px monospace';
+  ctx.fillStyle = C.faint;
+  const vw = ctx.measureText('v0.4').width;
+  ctx.fillText('v1.2', W - PAD - vw, 44);
+
+  // Top rule
+  ctx.strokeStyle = C.line; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(PAD, 60); ctx.lineTo(W - PAD, 60); ctx.stroke();
+
+  const anchor  = getAnchor();
+  const anchor2 = state.mode === 'compare' ? getSecondAnchor() : null;
+
+  if (state.mode === 'compare') {
+    _canvasCompare(ctx, C, PAD, W, H, anchor, anchor2);
+  } else if (state.mode === 'life') {
+    _canvasLife(ctx, C, PAD, W, H, anchor);
+  } else if (state.mode === 'period') {
+    _canvasPeriod(ctx, C, PAD, W, H, anchor);
+  } else {
+    _canvasEvent(ctx, C, PAD, W, H, anchor);
+  }
+
+  // Bottom rule + footer
+  ctx.strokeStyle = C.line; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(PAD, H - 38); ctx.lineTo(W - PAD, H - 38); ctx.stroke();
+  ctx.font = '10px monospace'; ctx.fillStyle = C.faint;
+  ctx.fillText('CRONOS · ¿A QUÉ FUISTE CONTEMPORÁNEO?', PAD, H - 18);
+
+  return canvas;
+}
+
+function _canvasTimeline(ctx, C, PAD, W, yBase, anchor, anchor2) {
+  const BAR_H = 14;
+  const events = state.events.filter(e => state.activeCats.has(e.cat));
+  const allYears = [anchor.start, anchor.end,
+    ...(anchor2 ? [anchor2.start, anchor2.end] : []),
+    ...events.map(e => e.start), ...events.map(e => e.end || e.start)];
+  const minY = Math.min(...allYears) - 5;
+  const maxY = Math.max(...allYears) + 5;
+  const BAR_W = W - PAD * 2;
+  const toX = (y) => PAD + (y - minY) / (maxY - minY) * BAR_W;
+
+  // Base line
+  ctx.strokeStyle = C.line; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(PAD, yBase + BAR_H / 2); ctx.lineTo(W - PAD, yBase + BAR_H / 2); ctx.stroke();
+
+  // Primary band
+  ctx.fillStyle = 'rgba(212,162,76,0.15)';
+  ctx.fillRect(toX(anchor.start), yBase, toX(anchor.end) - toX(anchor.start), BAR_H);
+  ctx.strokeStyle = C.amber; ctx.lineWidth = 1;
+  ctx.strokeRect(toX(anchor.start), yBase, toX(anchor.end) - toX(anchor.start), BAR_H);
+
+  // Secondary band
+  if (anchor2) {
+    const offset = BAR_H + 4;
+    ctx.fillStyle = 'rgba(91,143,168,0.15)';
+    ctx.fillRect(toX(anchor2.start), yBase + offset, toX(anchor2.end) - toX(anchor2.start), BAR_H);
+    ctx.strokeStyle = C.steel; ctx.lineWidth = 1;
+    ctx.strokeRect(toX(anchor2.start), yBase + offset, toX(anchor2.end) - toX(anchor2.start), BAR_H);
+  }
+
+  // Event dots
+  const catColors = { tech: C.amber, war: C.rust, science: C.sage, sport: C.sky, everyday: C.plum, latam: '#6aabdc', futbol: '#5aaa70' };
+  events.forEach(ev => {
+    const x = toX(ev.start);
+    const dotY = anchor2 ? yBase + BAR_H + 4 + BAR_H / 2 + 8 : yBase + BAR_H / 2;
+    ctx.fillStyle = catColors[ev.cat] || C.dim;
+    ctx.beginPath();
+    ctx.arc(x, dotY, 2.5, 0, Math.PI * 2);
+    ctx.fill();
+  });
+
+  // Year labels
+  ctx.font = '10px monospace'; ctx.fillStyle = C.faint;
+  const labelY = anchor2 ? yBase + BAR_H * 2 + 4 + 20 : yBase + BAR_H + 16;
+  ctx.fillText(minY.toString(), PAD, labelY);
+  const endStr = maxY.toString();
+  ctx.fillText(endStr, W - PAD - ctx.measureText(endStr).width, labelY);
+}
+
+function _canvasLife(ctx, C, PAD, W, H, anchor) {
+  const name  = state.name1 || null;
+  const years = anchor.end - anchor.start;
+
+  ctx.font = '10px monospace'; ctx.fillStyle = C.faint;
+  ctx.fillText('UNA VIDA', PAD, 90);
+
+  ctx.font = 'italic 36px Georgia, serif';
+  ctx.fillStyle = name ? C.amber : C.ink;
+  ctx.fillText(name || '¿A qué fuiste contemporáneo?', PAD, 134);
+
+  ctx.font = '15px monospace'; ctx.fillStyle = C.dim;
+  ctx.fillText(`${anchor.start}  —  ${anchor.end}  ·  ${years} años`, PAD, 162);
+
+  const during = state.events.filter(e => e.start >= anchor.start && e.start <= anchor.end);
+  const before = state.events.filter(e => e.start < anchor.start);
+  const after  = state.events.filter(e => e.start > anchor.end);
+
+  ctx.font = '10px monospace'; ctx.fillStyle = C.faint;
+  ctx.fillText(`${before.length} HITOS YA EXISTÍAN  ·  ${during.length} LLEGARON DURANTE  ·  ${after.length} LLEGARON DESPUÉS`, PAD, 186);
+
+  _canvasTimeline(ctx, C, PAD, W, 205, anchor, null);
+
+  // Key events
+  const picks = during.slice(0, 6);
+  if (picks.length) {
+    ctx.font = '10px monospace'; ctx.fillStyle = C.faint;
+    ctx.fillText('DURANTE SU VIDA LLEGARON:', PAD, 286);
+    ctx.font = '13px Georgia, serif'; ctx.fillStyle = C.dim;
+    const cols = [PAD, PAD + 270, PAD + 550];
+    picks.forEach((ev, i) => {
+      ctx.fillText(`· ${ev.title} (${ev.start})`, cols[Math.floor(i / 2)], 308 + (i % 2) * 24);
+    });
+  }
+}
+
+function _canvasCompare(ctx, C, PAD, W, H, anchor, anchor2) {
+  const label1 = state.name1 || 'Vida A';
+  const label2 = state.name2 || 'Vida B';
+  const overlapStart = Math.max(anchor.start, anchor2.start);
+  const overlapEnd   = Math.min(anchor.end,   anchor2.end);
+  const overlap      = overlapEnd - overlapStart;
+
+  ctx.font = '10px monospace'; ctx.fillStyle = C.faint;
+  ctx.fillText('COMPARACIÓN GENERACIONAL', PAD, 90);
+
+  ctx.font = 'italic 30px Georgia, serif';
+  ctx.fillStyle = C.amber;
+  ctx.fillText(label1, PAD, 128);
+  ctx.font = '13px monospace'; ctx.fillStyle = C.dim;
+  ctx.fillText(`${anchor.start} — ${anchor.end}  ·  ${anchor.end - anchor.start} años`, PAD, 150);
+
+  ctx.font = 'italic 30px Georgia, serif';
+  ctx.fillStyle = C.steel;
+  ctx.fillText(label2, PAD, 192);
+  ctx.font = '13px monospace'; ctx.fillStyle = C.dim;
+  ctx.fillText(`${anchor2.start} — ${anchor2.end}  ·  ${anchor2.end - anchor2.start} años`, PAD, 214);
+
+  ctx.font = 'italic 18px Georgia, serif';
+  ctx.fillStyle = overlap > 0 ? C.sage : C.faint;
+  ctx.fillText(overlap > 0 ? `${overlap} años compartidos` : 'Sin solapamiento', PAD, 244);
+
+  _canvasTimeline(ctx, C, PAD, W, 265, anchor, anchor2);
+
+  // Events during overlap
+  if (overlap > 0) {
+    const picks = state.events
+      .filter(e => state.activeCats.has(e.cat) && e.start >= overlapStart && e.start <= overlapEnd)
+      .slice(0, 5);
+    if (picks.length) {
+      ctx.font = '10px monospace'; ctx.fillStyle = C.faint;
+      ctx.fillText('CONTEMPORÁNEOS:', PAD, 388);
+      ctx.font = '13px Georgia, serif'; ctx.fillStyle = C.dim;
+      ctx.fillText(picks.map(e => `${e.title} (${e.start})`).join('  ·  '), PAD, 410);
+    }
+  }
+}
+
+function _canvasPeriod(ctx, C, PAD, W, H, anchor) {
+  const p = anchor.period;
+  const duration = p.end - p.start;
+
+  ctx.font = '10px monospace'; ctx.fillStyle = C.faint;
+  ctx.fillText('PERÍODO HISTÓRICO', PAD, 90);
+
+  ctx.font = 'bold 28px Georgia, serif'; ctx.fillStyle = C.amber;
+  ctx.fillText(p.title, PAD, 130);
+
+  ctx.font = '15px monospace'; ctx.fillStyle = C.dim;
+  ctx.fillText(`${p.start}  —  ${p.end}  ·  ${duration} años`, PAD, 162);
+
+  // Description
+  const words = p.desc.split(' ');
+  let line = '', y = 198;
+  ctx.font = '13px Georgia, serif'; ctx.fillStyle = C.dim;
+  words.forEach(word => {
+    const test = line + word + ' ';
+    if (ctx.measureText(test).width > W - PAD * 2 && line) {
+      ctx.fillText(line.trim(), PAD, y); y += 20; line = word + ' ';
+    } else { line = test; }
+  });
+  if (line.trim()) ctx.fillText(line.trim(), PAD, y);
+
+  // Stats
+  const during = state.events.filter(e => state.activeCats.has(e.cat) && e.start >= p.start && e.start <= p.end);
+  const before = state.events.filter(e => state.activeCats.has(e.cat) && e.start < p.start);
+  const after  = state.events.filter(e => state.activeCats.has(e.cat) && e.start > p.end);
+
+  ctx.font = '10px monospace'; ctx.fillStyle = C.faint;
+  ctx.fillText(`${before.length} ANTERIORES  ·  ${during.length} CONTEMPORÁNEOS  ·  ${after.length} POSTERIORES`, PAD, 256);
+
+  if (during.length) {
+    ctx.font = '10px monospace'; ctx.fillStyle = C.faint;
+    ctx.fillText('DURANTE EL PERÍODO:', PAD, 288);
+    ctx.font = '13px Georgia, serif'; ctx.fillStyle = C.ink;
+    ctx.fillText(during.slice(0, 5).map(e => `${e.title} (${e.start})`).join('  ·  '), PAD, 308);
+  }
+
+  _canvasTimeline(ctx, C, PAD, W, 340, anchor, null);
+}
+
+function _canvasEvent(ctx, C, PAD, W, H, anchor) {
+  const ev  = anchor.event;
+  const cat = state.categories[ev.cat];
+
+  ctx.font = '10px monospace'; ctx.fillStyle = C.faint;
+  ctx.fillText('UN HITO', PAD, 90);
+
+  if (cat) {
+    ctx.font = '10px monospace'; ctx.fillStyle = cat.colorHex;
+    ctx.fillText(cat.label.toUpperCase(), PAD, 114);
+  }
+
+  ctx.font = 'italic 40px Georgia, serif'; ctx.fillStyle = C.ink;
+  ctx.fillText(ev.title, PAD, 162);
+
+  ctx.font = '16px monospace'; ctx.fillStyle = C.dim;
+  ctx.fillText(ev.end ? `${ev.start} — ${ev.end}` : `${ev.start}`, PAD, 194);
+
+  // Wrap description
+  ctx.font = '15px Georgia, serif'; ctx.fillStyle = C.dim;
+  const words = ev.desc.split(' ');
+  let line = '', lineY = 234;
+  words.forEach(word => {
+    const test = line + word + ' ';
+    if (ctx.measureText(test).width > W - PAD * 2 && line) {
+      ctx.fillText(line.trim(), PAD, lineY);
+      line = word + ' '; lineY += 26;
+    } else { line = test; }
+  });
+  if (line.trim()) ctx.fillText(line.trim(), PAD, lineY);
+
+  _canvasTimeline(ctx, C, PAD, W, lineY + 30, anchor, null);
+}
+
+// =========================================================================
+// SHARE ACTIONS
+// =========================================================================
+function openShareModal() {
+  const overlay = document.getElementById('share-overlay');
+  overlay.classList.add('open');
+
+  // Render canvas preview
+  const canvas = buildShareCanvas();
+  const preview = document.getElementById('share-preview');
+  preview.innerHTML = '';
+  preview.appendChild(canvas);
+
+  // Render text
+  document.getElementById('share-text-box').textContent = generateShareText();
+}
+
+function closeShareModal() {
+  document.getElementById('share-overlay').classList.remove('open');
+}
+
+function shareViaWhatsApp() {
+  window.open(`https://wa.me/?text=${encodeURIComponent(generateShareText())}`, '_blank');
+}
+
+function shareViaTwitter() {
+  const text = generateShareText().replace(/🕰️\s*/g, '').substring(0, 240) + '\n#Cronos';
+  window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
+}
+
+function copyShareText() {
+  navigator.clipboard.writeText(generateShareText()).then(() => {
+    const btn = document.getElementById('share-copy');
+    const orig = btn.textContent;
+    btn.textContent = '✓ Copiado';
+    setTimeout(() => { btn.textContent = orig; }, 2000);
+  });
+}
+
+function downloadShareImage() {
+  const canvas = buildShareCanvas();
+  const a = document.createElement('a');
+  a.download = 'cronos.png';
+  a.href = canvas.toDataURL('image/png');
+  a.click();
+}
+
+// =========================================================================
+// UI BOOT
+// =========================================================================
+function bootUI() {
+  const app = document.getElementById('app');
+  const totalHitos = state.events.length;
+
+  const catChipsHTML = Object.entries(state.categories).map(([key, cat]) =>
+    `<button class="cat-chip active" data-cat="${key}"><span class="dot"></span>${cat.label}</button>`
+  ).join('');
+
+  app.innerHTML = `
+    <div class="controls">
+      <div class="control-group">
+        <label>Línea principal</label>
+        <div class="anchor-tabs">
+          <button class="active" data-mode="life">Una vida</button>
+          <button data-mode="compare">Dos vidas</button>
+          <button data-mode="event">Un hito</button>
+          <button data-mode="period">Período</button>
+        </div>
+
+        <div id="life-inputs">
+          <div class="input-row" style="margin-bottom:8px;">
+            <input type="text" id="name-life-input" value="${state.name1}" placeholder="Nombre (opcional)">
+          </div>
+          <div class="input-row" style="margin-bottom:10px;">
+            <input type="number" id="birth-year" value="${state.birthYear}" min="1800" max="2026" placeholder="Nacimiento">
+            <span style="color:var(--ink-faint);font-family:'JetBrains Mono',monospace;font-size:11px;">→</span>
+            <input type="number" id="death-year" value="${state.deathYear}" min="1800" max="2026" placeholder="Hoy / Muerte">
+          </div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ink-faint);letter-spacing:0.1em;">NOMBRE OPCIONAL · NACIMIENTO · FIN</div>
+        </div>
+
+        <div id="compare-inputs" style="display:none;">
+          <div class="life-block">
+            <div class="input-row" style="margin-bottom:8px;">
+              <input type="text" id="name1-input" value="${state.name1}" placeholder="Nombre (ej: Abuela)">
+            </div>
+            <div class="input-row">
+              <input type="number" id="birth1-year" value="${state.birthYear}" min="1800" max="2026" placeholder="Nacimiento">
+              <span style="color:var(--ink-faint);font-family:'JetBrains Mono',monospace;font-size:11px;">→</span>
+              <input type="number" id="death1-year" value="${state.deathYear}" min="1800" max="2026" placeholder="Fin">
+            </div>
+          </div>
+          <div class="life-block secondary">
+            <div class="input-row" style="margin-bottom:8px;">
+              <input type="text" id="name2-input" value="${state.name2}" placeholder="Nombre (ej: Yo)">
+            </div>
+            <div class="input-row">
+              <input type="number" id="birth2-year" value="${state.birth2Year}" min="1800" max="2026" placeholder="Nacimiento">
+              <span style="color:var(--steel);font-family:'JetBrains Mono',monospace;font-size:11px;">→</span>
+              <input type="number" id="death2-year" value="${state.death2Year}" min="1800" max="2026" placeholder="Fin">
+            </div>
+          </div>
+        </div>
+
+        <div id="event-inputs" style="display:none;">
+          <select id="event-select"></select>
+        </div>
+
+        <div id="period-inputs" style="display:none;">
+          <div class="period-group">
+            <div class="period-group-label">Historia mundial</div>
+            <div id="period-list-mundo"></div>
+          </div>
+          <div class="period-group">
+            <div class="period-group-label">Argentina</div>
+            <div id="period-list-argentina"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label>Categorías visibles</label>
+        <div class="categories">${catChipsHTML}</div>
+      </div>
+
+      <div class="settings-row">
+        <label>Apariencia</label>
+        <div class="settings-inline">
+          <div class="theme-btns">
+            <button class="theme-btn" data-theme="dark">● Oscuro</button>
+            <button class="theme-btn" data-theme="light">○ Claro</button>
+          </div>
+          <div class="fontsize-btns">
+            <button class="fontsize-btn" data-size="sm">A−</button>
+            <button class="fontsize-btn" data-size="md">A</button>
+            <button class="fontsize-btn" data-size="lg">A+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="anchor-summary" id="anchor-summary"></div>
+
+    <div class="timeline-wrapper">
+      <div class="timeline-header">
+        <h2>— La línea del tiempo</h2>
+        <div class="pres-anchor-title" id="pres-anchor-title" style="display:none;">
+          <span class="pres-anchor-name" id="pres-anchor-name"></span>
+          <span class="pres-anchor-years" id="pres-anchor-years"></span>
+        </div>
+        <div class="timeline-header-right">
+          <span class="count" id="event-count">0 hitos</span>
+          <button class="present-btn" id="present-btn">⊞ proyectar</button>
+          <button class="share-btn" id="share-btn">↗ compartir</button>
+        </div>
+      </div>
+      <div class="timeline-scroll">
+        <div class="timeline" id="timeline"></div>
+      </div>
+    </div>
+
+    <div class="footer-note">
+      <span>Dataset curado · ${totalHitos} hitos</span>
+      <span>Tocá un evento para ver detalles</span>
+    </div>
+  `;
+
+  attachListeners();
+  initAppearance();
+  render();
+}
+
+function attachListeners() {
+  // Mode tabs
+  document.querySelectorAll('.anchor-tabs button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.anchor-tabs button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.mode = btn.dataset.mode;
+      document.getElementById('life-inputs').style.display    = state.mode === 'life'    ? 'block' : 'none';
+      document.getElementById('compare-inputs').style.display = state.mode === 'compare' ? 'block' : 'none';
+      document.getElementById('event-inputs').style.display   = state.mode === 'event'   ? 'block' : 'none';
+      document.getElementById('period-inputs').style.display  = state.mode === 'period'  ? 'block' : 'none';
+      render();
+    });
+  });
+
+  // Life
+  document.getElementById('name-life-input').addEventListener('input', e => { state.name1 = e.target.value.trim(); render(); });
+  document.getElementById('birth-year').addEventListener('input', e => { state.birthYear = parseInt(e.target.value) || 1913; render(); });
+  document.getElementById('death-year').addEventListener('input', e => { state.deathYear = parseInt(e.target.value) || 2014; render(); });
+
+  // Compare vida 1
+  document.getElementById('name1-input').addEventListener('input',  e => { state.name1     = e.target.value.trim(); render(); });
+  document.getElementById('birth1-year').addEventListener('input',  e => { state.birthYear = parseInt(e.target.value) || 1913; render(); });
+  document.getElementById('death1-year').addEventListener('input',  e => { state.deathYear = parseInt(e.target.value) || 2014; render(); });
+
+  // Compare vida 2
+  document.getElementById('name2-input').addEventListener('input',  e => { state.name2      = e.target.value.trim(); render(); });
+  document.getElementById('birth2-year').addEventListener('input',  e => { state.birth2Year = parseInt(e.target.value) || 1979; render(); });
+  document.getElementById('death2-year').addEventListener('input',  e => { state.death2Year = parseInt(e.target.value) || 2026; render(); });
+
+  // Event select
+  const eventSelect = document.getElementById('event-select');
+  state.events.forEach(ev => {
+    const opt = document.createElement('option');
+    opt.value = ev.id;
+    opt.textContent = `${ev.title} (${ev.end ? ev.start + '-' + ev.end : ev.start})`;
+    if (ev.id === state.anchorEventId) opt.selected = true;
+    eventSelect.appendChild(opt);
+  });
+  eventSelect.addEventListener('change', e => { state.anchorEventId = e.target.value; render(); });
+
+  // Period buttons
+  ['mundo', 'argentina'].forEach(group => {
+    const container = document.getElementById(`period-list-${group}`);
+    state.periods.filter(p => p.group === group).forEach(p => {
+      const btn = document.createElement('button');
+      btn.className = 'period-btn' + (p.id === state.periodId ? ' active' : '');
+      btn.dataset.periodId = p.id;
+      btn.innerHTML = `<span>${p.title}</span><span class="period-years">${p.start}–${p.end}</span>`;
+      btn.title = p.desc;
+      btn.addEventListener('click', () => {
+        state.periodId = p.id;
+        document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        render();
+      });
+      container.appendChild(btn);
+    });
+  });
+
+  // Category chips
+  document.querySelectorAll('.cat-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const cat = chip.dataset.cat;
+      if (state.activeCats.has(cat)) {
+        if (state.activeCats.size > 1) { state.activeCats.delete(cat); chip.classList.remove('active'); }
+      } else {
+        state.activeCats.add(cat); chip.classList.add('active');
+      }
+      render();
+    });
+  });
+
+  // Detail panel
+  document.getElementById('close-panel').addEventListener('click', () => {
+    document.getElementById('detail-panel').classList.remove('open');
+  });
+
+  // Theme & font size
+  document.querySelectorAll('.theme-btn').forEach(btn =>
+    btn.addEventListener('click', () => setTheme(btn.dataset.theme))
+  );
+  document.querySelectorAll('.fontsize-btn').forEach(btn =>
+    btn.addEventListener('click', () => setFontSize(btn.dataset.size))
+  );
+
+  // Presentation mode
+  document.getElementById('present-btn').addEventListener('click', enterPresentation);
+  document.getElementById('pres-exit').addEventListener('click', exitPresentation);
+  document.addEventListener('fullscreenchange', () => {
+    if (!document.fullscreenElement) exitPresentation();
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && document.body.classList.contains('presentation')) exitPresentation();
+  });
+
+  // Share modal
+  document.getElementById('share-btn').addEventListener('click', openShareModal);
+  document.getElementById('close-share').addEventListener('click', closeShareModal);
+  document.getElementById('share-overlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('share-overlay')) closeShareModal();
+  });
+  document.getElementById('share-whatsapp').addEventListener('click', shareViaWhatsApp);
+  document.getElementById('share-twitter').addEventListener('click', shareViaTwitter);
+  document.getElementById('share-copy').addEventListener('click', copyShareText);
+  document.getElementById('share-download').addEventListener('click', downloadShareImage);
+}
+
+// =========================================================================
+// RENDER
+// =========================================================================
+function renderAnchorSummary() {
+  const a  = getAnchor();
+  const el = document.getElementById('anchor-summary');
+
+  if (state.mode === 'life') {
+    const years = a.end - a.start;
+    el.innerHTML = `
+      <div><div class="label">Línea principal</div><div class="value">${a.start} — ${a.end}</div></div>
+      <div><div class="label">Duración</div><div class="value small">${years} año${years !== 1 ? 's' : ''} de vida</div></div>
+      <div><div class="label">Siglo de nacimiento</div><div class="value small">Siglo ${Math.floor((a.start - 1) / 100) + 1}</div></div>
+    `;
+  } else if (state.mode === 'compare') {
+    const b = getSecondAnchor();
+    const overlap = Math.min(a.end, b.end) - Math.max(a.start, b.start);
+    el.innerHTML = `
+      <div><div class="label" style="color:var(--amber)">${state.name1 || 'Vida A'}</div><div class="value">${a.start} — ${a.end}</div></div>
+      <div><div class="label" style="color:var(--steel)">${state.name2 || 'Vida B'}</div><div class="value steel">${b.start} — ${b.end}</div></div>
+      <div><div class="label">Solapamiento</div><div class="value overlap">${overlap > 0 ? `${overlap} años compartidos` : 'Sin solapamiento'}</div></div>
+    `;
+  } else if (state.mode === 'period') {
+    const p = a.period;
+    const duration = p.end - p.start;
+    el.innerHTML = `
+      <div><div class="label">Período histórico</div><div class="value">${p.title}</div></div>
+      <div><div class="label">Años</div><div class="value small">${p.start} — ${p.end}</div></div>
+      <div><div class="label">Duración</div><div class="value small">${duration} años</div></div>
+    `;
+  } else {
+    const ev = a.event;
+    el.innerHTML = `
+      <div><div class="label">Línea principal</div><div class="value">${ev.title}</div></div>
+      <div><div class="label">Año(s)</div><div class="value small">${ev.end ? ev.start + ' — ' + ev.end : ev.start}</div></div>
+      <div><div class="label">Categoría</div><div class="value small">${state.categories[ev.cat].label}</div></div>
+    `;
+  }
+}
+
+function renderTimeline() {
+  const anchor  = getAnchor();
+  const anchor2 = state.mode === 'compare' ? getSecondAnchor() : null;
+  const timeline = document.getElementById('timeline');
+  timeline.innerHTML = '';
+
+  const anchorEventId = state.mode === 'event' ? state.anchorEventId : null;
+  const visible = state.events.filter(e => state.activeCats.has(e.cat) && e.id !== anchorEventId);
+
+  const anchorYears = anchor2
+    ? [anchor.start, anchor.end, anchor2.start, anchor2.end]
+    : [anchor.start, anchor.end];
+  const allYears = [...anchorYears, ...visible.flatMap(e => [e.start, e.end || e.start])];
+  const minYear  = Math.min(...allYears) - 5;
+  const maxYear  = Math.max(...allYears) + 5;
+  const yearSpan = maxYear - minYear;
+  const PX_PER_YEAR = 18;                        // 18px por año → scroll libre
+  const totalWidth  = Math.max(1800, yearSpan * PX_PER_YEAR);
+  const pxPerYear   = totalWidth / yearSpan;
+  const yearToPx    = (y) => (y - minYear) * pxPerYear;
+
+  // Actualizar min-width del timeline según el rango
+  document.getElementById('timeline').style.minWidth = totalWidth + 'px';
+
+  // Year axis
+  const axis = document.createElement('div');
+  axis.className = 'year-axis';
+  const tickStep  = yearSpan > 300 ? 20 : 10;   // siempre 10 años salvo rangos muy amplios
+  const firstTick = Math.ceil(minYear / tickStep) * tickStep;
+  for (let y = firstTick; y <= maxYear; y += tickStep) {
+    const tick = document.createElement('div');
+    tick.className = 'year-tick';
+    tick.style.left = yearToPx(y) + 'px';
+    tick.textContent = y;
+    axis.appendChild(tick);
+  }
+  timeline.appendChild(axis);
+
+  // Primary band
+  const band = document.createElement('div');
+  band.className = 'anchor-band';
+  band.style.left  = yearToPx(anchor.start) + 'px';
+  band.style.width = Math.max(2, yearToPx(anchor.end) - yearToPx(anchor.start)) + 'px';
+  timeline.appendChild(band);
+
+  // Secondary band
+  if (anchor2) {
+    const band2 = document.createElement('div');
+    band2.className = 'anchor-band secondary';
+    band2.style.left  = yearToPx(anchor2.start) + 'px';
+    band2.style.width = Math.max(2, yearToPx(anchor2.end) - yearToPx(anchor2.start)) + 'px';
+    timeline.appendChild(band2);
+  }
+
+  // Primary markers
+  const label1 = state.mode === 'compare' ? (state.name1 || 'Vida A') : null;
+  const sm = document.createElement('div');
+  sm.className = 'anchor-marker';
+  sm.style.left = yearToPx(anchor.start) + 'px';
+  sm.setAttribute('data-label',
+    state.mode === 'life'    ? `↓ NACIMIENTO ${anchor.start}` :
+    state.mode === 'compare' ? `↓ ${label1 ? label1.toUpperCase() + ' ' : ''}${anchor.start}` :
+    state.mode === 'period'  ? `↓ INICIO ${anchor.start}` :
+                               `↓ INICIO ${anchor.start}`);
+  timeline.appendChild(sm);
+
+  if (anchor.end !== anchor.start) {
+    const em = document.createElement('div');
+    em.className = 'anchor-marker end';
+    em.style.left = yearToPx(anchor.end) + 'px';
+    em.setAttribute('data-label', `↓ ${anchor.end}`);
+    timeline.appendChild(em);
+  }
+
+  // Secondary markers
+  if (anchor2) {
+    const label2 = state.name2 || 'Vida B';
+    const sm2 = document.createElement('div');
+    sm2.className = 'anchor-marker secondary';
+    sm2.style.left = yearToPx(anchor2.start) + 'px';
+    sm2.setAttribute('data-label', `↓ ${label2.toUpperCase()} ${anchor2.start}`);
+    timeline.appendChild(sm2);
+
+    if (anchor2.end !== anchor2.start) {
+      const em2 = document.createElement('div');
+      em2.className = 'anchor-marker secondary end';
+      em2.style.left = yearToPx(anchor2.end) + 'px';
+      em2.setAttribute('data-label', `↓ ${anchor2.end}`);
+      timeline.appendChild(em2);
+    }
+  }
+
+  // Events — two-pass dynamic layout
+  const LANE_H  = 24;  // height per lane
+  const CAT_GAP = 28;  // gap between categories
+  const CAT_ORDER = ['tech', 'science', 'war', 'everyday', 'sport', 'latam', 'futbol'];
+
+  const sorted = [...visible].sort((a, b) => a.start - b.start);
+
+  // Build catLanes with just lane tracking (baseTop calculated after pass 1)
+  const catLanes = {};
+  CAT_ORDER.forEach(k => { catLanes[k] = { baseTop: 0, lanes: [], laneCount: 0 }; });
+
+  // Pass 1 — assign lane index to each event
+  sorted.forEach(ev => {
+    const catInfo = catLanes[ev.cat];
+    if (!catInfo) return;
+    const evStart = yearToPx(ev.start);
+    const evEnd   = yearToPx(ev.end || ev.start) + (ev.title.length * 8) + 40;
+    let laneIdx = 0;
+    while (true) {
+      if (!catInfo.lanes[laneIdx]) { catInfo.lanes[laneIdx] = evEnd; break; }
+      if (catInfo.lanes[laneIdx] < evStart) { catInfo.lanes[laneIdx] = evEnd; break; }
+      laneIdx++;
+    }
+    ev._lane = laneIdx;
+    ev._left = evStart;
+    catInfo.laneCount = Math.max(catInfo.laneCount, laneIdx + 1);
+  });
+
+  // Pass 2 — compute baseTop dynamically based on actual lane usage
+  let cursor = 20;
+  CAT_ORDER.forEach(k => {
+    const info = catLanes[k];
+    info.baseTop = cursor;
+    const activeLanes = info.laneCount || 0;
+    // Only advance cursor if this category has visible events
+    if (activeLanes > 0) cursor += activeLanes * LANE_H + CAT_GAP;
+  });
+
+  // Update timeline height dynamically
+  const tlEl = document.getElementById('timeline');
+  tlEl.style.height = Math.max(300, cursor + 40) + 'px';
+
+  // Assign final _top
+  sorted.forEach(ev => {
+    const catInfo = catLanes[ev.cat];
+    if (!catInfo || ev._lane === undefined) return;
+    ev._top = catInfo.baseTop + ev._lane * LANE_H;
+  });
+
+  // Category lane labels + separators
+  CAT_ORDER.forEach((key, i) => {
+    const info = catLanes[key];
+    if (!info || info.laneCount === 0 || !state.activeCats.has(key)) return;
+    const cat = state.categories[key];
+    if (!cat) return;
+
+    // Separator line
+    if (i > 0) {
+      const sep = document.createElement('div');
+      sep.className = 'cat-lane-sep';
+      sep.style.top = (info.baseTop - CAT_GAP / 2) + 'px';
+      timeline.appendChild(sep);
+    }
+
+    // Label
+    const lbl = document.createElement('div');
+    lbl.className = 'cat-lane-label';
+    lbl.style.top   = (info.baseTop + 3) + 'px';
+    lbl.style.color = cat.colorHex;
+    lbl.textContent = cat.label;
+    timeline.appendChild(lbl);
+  });
+
+  sorted.forEach(ev => {
+    if (ev._top === undefined) return;
+    const isSpan = ev.end && ev.end !== ev.start;
+    const el = document.createElement('div');
+    el.className = `event ${isSpan ? 'span' : 'point'}`;
+    el.style.left = ev._left + 'px';
+    el.style.top  = ev._top  + 'px';
+    el.style.setProperty('--color', state.categories[ev.cat].colorHex);
+
+    if (state.mode !== 'compare') {
+      const rel = describeRelation(ev, anchor);
+      if (rel.status === 'before') el.classList.add('before-anchor');
+      if (state.mode === 'period' && rel.status === 'after') el.classList.add('before-anchor');
+    }
+
+    if (isSpan) {
+      const width = yearToPx(ev.end) - yearToPx(ev.start);
+      el.innerHTML = `<div class="label">${ev.title} <span class="year">${ev.start}–${ev.end}</span></div><div class="bar" style="width:${width}px;"></div>`;
+    } else {
+      el.innerHTML = `<div class="dot"></div><div class="label">${ev.title} <span class="year">${ev.start}</span></div>`;
+    }
+
+    el.addEventListener('click', () => showDetail(ev));
+    timeline.appendChild(el);
+  });
+
+  document.getElementById('event-count').textContent = `${visible.length} hito${visible.length !== 1 ? 's' : ''}`;
+
+  setTimeout(() => {
+    const sc = document.querySelector('.timeline-scroll');
+    const centerYear = anchor2
+      ? (Math.min(anchor.start, anchor2.start) + Math.max(anchor.end, anchor2.end)) / 2
+      : (anchor.start + anchor.end) / 2;
+    sc.scrollLeft = yearToPx(centerYear) - sc.clientWidth / 2;
+  }, 50);
+}
+
+function showDetail(event) {
+  const anchor = getAnchor();
+  const cat    = state.categories[event.cat];
+  const yearLabel = event.end ? `${event.start} — ${event.end}` : `${event.start}`;
+
+  let relHTML = '';
+  if (state.mode === 'compare') {
+    const anchor2 = getSecondAnchor();
+    const name1 = state.name1 || 'Vida A';
+    const name2 = state.name2 || 'Vida B';
+    const rel1  = describeRelation(event, anchor,  name1);
+    const rel2  = describeRelation(event, anchor2, name2);
+    relHTML = `
+      <div class="relation">
+        <div class="life-name">${name1}</div>
+        <div class="primary">${rel1.primary}</div>
+        <div class="rel-secondary">${rel1.secondary}</div>
+      </div>
+      <div class="relation secondary">
+        <div class="life-name">${name2}</div>
+        <div class="primary">${rel2.primary}</div>
+        <div class="rel-secondary">${rel2.secondary}</div>
+      </div>`;
+  } else {
+    const rel = describeRelation(event, anchor);
+    relHTML = `<div class="relation"><div class="primary">${rel.primary}</div><div class="rel-secondary">${rel.secondary}</div></div>`;
+  }
+
+  document.getElementById('detail-content').innerHTML = `
+    <div class="cat-label" style="color:${cat.colorHex}">${cat.label}</div>
+    <h3>${event.title}</h3>
+    <div class="years">${yearLabel}</div>
+    ${relHTML}
+    <p class="description">${event.desc}</p>
+  `;
+
+  document.getElementById('detail-panel').classList.add('open');
+}
+
+function render() {
+  renderAnchorSummary();
+  renderTimeline();
+  updatePresAnchorTitle();
+}
+
+// =========================================================================
+// THEME & FONT SIZE
+// =========================================================================
+function setTheme(theme) {
+  document.body.classList.remove('theme-dark', 'theme-light');
+  document.body.classList.add('theme-' + theme);
+  state.theme = theme;
+  localStorage.setItem('cronos-theme', theme);
+  document.querySelectorAll('.theme-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.theme === theme)
+  );
+}
+
+function setFontSize(size) {
+  document.body.classList.remove('font-sm', 'font-md', 'font-lg');
+  document.body.classList.add('font-' + size);
+  state.fontSize = size;
+  localStorage.setItem('cronos-fontsize', size);
+  document.querySelectorAll('.fontsize-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.size === size)
+  );
+}
+
+function initAppearance() {
+  setTheme(state.theme);
+  setFontSize(state.fontSize);
+}
+
+// =========================================================================
+// PRESENTATION MODE
+// =========================================================================
+function updatePresAnchorTitle() {
+  const anchor = getAnchor();
+  const nameEl  = document.getElementById('pres-anchor-name');
+  const yearsEl = document.getElementById('pres-anchor-years');
+  if (!nameEl) return;
+
+  let name, years;
+  if (state.mode === 'life') {
+    name  = state.name1 || 'Una vida';
+    years = `${anchor.start} — ${anchor.end}`;
+  } else if (state.mode === 'compare') {
+    name  = `${state.name1 || 'Vida A'}  ·  ${state.name2 || 'Vida B'}`;
+    years = `${anchor.start}–${anchor.end}  /  ${state.birth2Year}–${state.death2Year}`;
+  } else if (state.mode === 'period') {
+    name  = anchor.title;
+    years = `${anchor.start} — ${anchor.end}`;
+  } else {
+    name  = anchor.title;
+    years = anchor.end !== anchor.start ? `${anchor.start} — ${anchor.end}` : `${anchor.start}`;
+  }
+
+  nameEl.textContent  = name;
+  yearsEl.textContent = years;
+}
+
+function enterPresentation() {
+  updatePresAnchorTitle();
+  document.body.classList.add('presentation');
+  const el = document.documentElement;
+  if (el.requestFullscreen) el.requestFullscreen().catch(() => {});
+  // Auto-scroll timeline to anchor center
+  setTimeout(() => {
+    const scroll = document.querySelector('.timeline-scroll');
+    const marker = document.querySelector('.anchor-marker');
+    if (scroll && marker) {
+      const left = parseInt(marker.style.left) || 0;
+      scroll.scrollLeft = Math.max(0, left - scroll.clientWidth / 2);
+    }
+  }, 100);
+}
+
+function exitPresentation() {
+  document.body.classList.remove('presentation');
+  if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+}
+
+loadData();
+</script>
+
+</body>
+</html>

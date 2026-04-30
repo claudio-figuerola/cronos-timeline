@@ -1,0 +1,1141 @@
+{
+    "categories": {
+        "tech": {
+            "label": "Tecnología",
+            "colorHex": "#d4a24c"
+        },
+        "war": {
+            "label": "Guerras",
+            "colorHex": "#b85c3c"
+        },
+        "science": {
+            "label": "Ciencia",
+            "colorHex": "#7a8c6a"
+        },
+        "sport": {
+            "label": "Deportes",
+            "colorHex": "#6a8a9c"
+        },
+        "everyday": {
+            "label": "Vida cotidiana",
+            "colorHex": "#9c6a8a"
+        },
+        "latam": {
+            "label": "Arg / Latinoamérica",
+            "colorHex": "#6aabdc"
+        },
+        "futbol": {
+            "label": "Fútbol argentino",
+            "colorHex": "#5aaa70"
+        }
+    },
+    "events": [
+        {
+            "id": "telephone",
+            "cat": "tech",
+            "title": "Teléfono",
+            "start": 1876,
+            "desc": "Alexander Graham Bell patenta el teléfono, el primer dispositivo que transmite voz humana a distancia por cable."
+        },
+        {
+            "id": "lightbulb",
+            "cat": "tech",
+            "title": "Lámpara eléctrica",
+            "start": 1879,
+            "desc": "Edison desarrolla la primera lámpara incandescente comercialmente viable."
+        },
+        {
+            "id": "car",
+            "cat": "tech",
+            "title": "Automóvil",
+            "start": 1886,
+            "desc": "Karl Benz patenta el Motorwagen, el primer auto con motor de combustión interna."
+        },
+        {
+            "id": "radio",
+            "cat": "tech",
+            "title": "Radio",
+            "start": 1895,
+            "desc": "Marconi transmite la primera señal de radio inalámbrica."
+        },
+        {
+            "id": "flight",
+            "cat": "tech",
+            "title": "Vuelo de los Wright",
+            "start": 1903,
+            "desc": "Primer vuelo sostenido y controlado de una aeronave más pesada que el aire."
+        },
+        {
+            "id": "modelT",
+            "cat": "tech",
+            "title": "Ford Modelo T",
+            "start": 1908,
+            "desc": "Primer auto producido en masa que hizo el automóvil accesible a millones."
+        },
+        {
+            "id": "tv",
+            "cat": "tech",
+            "title": "Televisión",
+            "start": 1927,
+            "desc": "Philo Farnsworth realiza la primera transmisión electrónica de TV."
+        },
+        {
+            "id": "nylon",
+            "cat": "tech",
+            "title": "Nylon",
+            "start": 1935,
+            "desc": "DuPont desarrolla el primer polímero sintético, revolucionando textiles."
+        },
+        {
+            "id": "computer",
+            "cat": "tech",
+            "title": "ENIAC (computadora)",
+            "start": 1946,
+            "desc": "Primera computadora electrónica de propósito general."
+        },
+        {
+            "id": "transistor",
+            "cat": "tech",
+            "title": "Transistor",
+            "start": 1947,
+            "desc": "Bell Labs inventa el transistor, base de toda la electrónica moderna."
+        },
+        {
+            "id": "microwave",
+            "cat": "tech",
+            "title": "Horno microondas",
+            "start": 1947,
+            "desc": "Patentado por Raytheon tras un descubrimiento accidental con radar."
+        },
+        {
+            "id": "integrated-circuit",
+            "cat": "tech",
+            "title": "Circuito integrado",
+            "start": 1958,
+            "desc": "Jack Kilby construye el primer chip, semilla de la era digital."
+        },
+        {
+            "id": "arpanet",
+            "cat": "tech",
+            "title": "ARPANET",
+            "start": 1969,
+            "desc": "Primera red de computadoras, precursora de internet."
+        },
+        {
+            "id": "email",
+            "cat": "tech",
+            "title": "Email",
+            "start": 1971,
+            "desc": "Ray Tomlinson envía el primer email con el símbolo @."
+        },
+        {
+            "id": "pc",
+            "cat": "tech",
+            "title": "PC (Apple II / IBM)",
+            "start": 1977,
+            "desc": "La computadora personal llega al hogar."
+        },
+        {
+            "id": "walkman",
+            "cat": "tech",
+            "title": "Walkman",
+            "start": 1979,
+            "desc": "Sony lanza el primer reproductor de casetes portátil."
+        },
+        {
+            "id": "cellphone",
+            "cat": "tech",
+            "title": "Teléfono celular",
+            "start": 1983,
+            "desc": "Motorola DynaTAC, primer celular comercial."
+        },
+        {
+            "id": "www",
+            "cat": "tech",
+            "title": "World Wide Web",
+            "start": 1989,
+            "desc": "Tim Berners-Lee inventa la web en el CERN."
+        },
+        {
+            "id": "google",
+            "cat": "tech",
+            "title": "Google",
+            "start": 1998,
+            "desc": "Page y Brin fundan Google."
+        },
+        {
+            "id": "wikipedia",
+            "cat": "tech",
+            "title": "Wikipedia",
+            "start": 2001,
+            "desc": "Nace la enciclopedia colaborativa libre."
+        },
+        {
+            "id": "facebook",
+            "cat": "tech",
+            "title": "Facebook",
+            "start": 2004,
+            "desc": "Redes sociales masivas entran a la vida cotidiana."
+        },
+        {
+            "id": "youtube",
+            "cat": "tech",
+            "title": "YouTube",
+            "start": 2005,
+            "desc": "Video online accesible para todos."
+        },
+        {
+            "id": "iphone",
+            "cat": "tech",
+            "title": "iPhone",
+            "start": 2007,
+            "desc": "Apple redefine el smartphone y la computación móvil."
+        },
+        {
+            "id": "bitcoin",
+            "cat": "tech",
+            "title": "Bitcoin",
+            "start": 2009,
+            "desc": "Primera criptomoneda descentralizada."
+        },
+        {
+            "id": "chatgpt",
+            "cat": "tech",
+            "title": "ChatGPT",
+            "start": 2022,
+            "desc": "IA generativa entra al mainstream."
+        },
+        {
+            "id": "franco-prusiana",
+            "cat": "war",
+            "title": "Guerra Franco-Prusiana",
+            "start": 1870,
+            "end": 1871,
+            "desc": "Conflicto que reconfiguró Europa y unificó Alemania."
+        },
+        {
+            "id": "ww1",
+            "cat": "war",
+            "title": "Primera Guerra Mundial",
+            "start": 1914,
+            "end": 1918,
+            "desc": "El primer conflicto global industrializado. ~20M de muertos."
+        },
+        {
+            "id": "russian-rev",
+            "cat": "war",
+            "title": "Revolución Rusa",
+            "start": 1917,
+            "desc": "Los bolcheviques derrocan al zar, nace el primer estado comunista."
+        },
+        {
+            "id": "spanish-civil",
+            "cat": "war",
+            "title": "Guerra Civil Española",
+            "start": 1936,
+            "end": 1939,
+            "desc": "Antesala ideológica de la Segunda Guerra."
+        },
+        {
+            "id": "ww2",
+            "cat": "war",
+            "title": "Segunda Guerra Mundial",
+            "start": 1939,
+            "end": 1945,
+            "desc": "Conflicto más destructivo de la historia. ~70M de muertos."
+        },
+        {
+            "id": "hiroshima",
+            "cat": "war",
+            "title": "Bombas atómicas",
+            "start": 1945,
+            "desc": "Hiroshima y Nagasaki: inicio de la era nuclear."
+        },
+        {
+            "id": "korea",
+            "cat": "war",
+            "title": "Guerra de Corea",
+            "start": 1950,
+            "end": 1953,
+            "desc": "Primer conflicto caliente de la Guerra Fría."
+        },
+        {
+            "id": "vietnam",
+            "cat": "war",
+            "title": "Guerra de Vietnam",
+            "start": 1955,
+            "end": 1975,
+            "desc": "Conflicto prolongado con impacto cultural global."
+        },
+        {
+            "id": "cuban-missile",
+            "cat": "war",
+            "title": "Crisis de los Misiles",
+            "start": 1962,
+            "desc": "El mundo al borde de la guerra nuclear durante 13 días."
+        },
+        {
+            "id": "malvinas",
+            "cat": "war",
+            "title": "Guerra de Malvinas",
+            "start": 1982,
+            "desc": "Conflicto entre Argentina y Reino Unido por las islas."
+        },
+        {
+            "id": "berlin-wall",
+            "cat": "war",
+            "title": "Caída del Muro de Berlín",
+            "start": 1989,
+            "desc": "Símbolo del fin de la Guerra Fría."
+        },
+        {
+            "id": "gulf-war",
+            "cat": "war",
+            "title": "Guerra del Golfo",
+            "start": 1990,
+            "end": 1991,
+            "desc": "Invasión iraquí a Kuwait y respuesta de coalición."
+        },
+        {
+            "id": "9-11",
+            "cat": "war",
+            "title": "11 de Septiembre",
+            "start": 2001,
+            "desc": "Ataques a las Torres Gemelas, inicio de la 'Guerra contra el Terror'."
+        },
+        {
+            "id": "iraq",
+            "cat": "war",
+            "title": "Guerra de Irak",
+            "start": 2003,
+            "end": 2011,
+            "desc": "Invasión liderada por EEUU tras el 11-S."
+        },
+        {
+            "id": "ukraine",
+            "cat": "war",
+            "title": "Invasión rusa a Ucrania",
+            "start": 2022,
+            "desc": "Primera gran guerra en Europa desde 1945."
+        },
+        {
+            "id": "evolution",
+            "cat": "science",
+            "title": "El Origen de las Especies",
+            "start": 1859,
+            "desc": "Darwin publica la teoría de la evolución por selección natural."
+        },
+        {
+            "id": "periodic-table",
+            "cat": "science",
+            "title": "Tabla Periódica",
+            "start": 1869,
+            "desc": "Mendeléyev organiza los elementos químicos."
+        },
+        {
+            "id": "xrays",
+            "cat": "science",
+            "title": "Rayos X",
+            "start": 1895,
+            "desc": "Röntgen descubre una nueva radiación que ve a través de los cuerpos."
+        },
+        {
+            "id": "relativity",
+            "cat": "science",
+            "title": "Relatividad Especial",
+            "start": 1905,
+            "desc": "Einstein publica E=mc². Año milagroso."
+        },
+        {
+            "id": "penicillin",
+            "cat": "science",
+            "title": "Penicilina",
+            "start": 1928,
+            "desc": "Fleming descubre el primer antibiótico por casualidad."
+        },
+        {
+            "id": "dna",
+            "cat": "science",
+            "title": "Estructura del ADN",
+            "start": 1953,
+            "desc": "Watson, Crick y Franklin descifran la doble hélice."
+        },
+        {
+            "id": "sputnik",
+            "cat": "science",
+            "title": "Sputnik",
+            "start": 1957,
+            "desc": "Primer satélite artificial, inicio de la era espacial."
+        },
+        {
+            "id": "moon",
+            "cat": "science",
+            "title": "Llegada a la Luna",
+            "start": 1969,
+            "desc": "Apolo 11: Armstrong y Aldrin caminan en la Luna."
+        },
+        {
+            "id": "mars-rover",
+            "cat": "science",
+            "title": "Rover en Marte",
+            "start": 1997,
+            "desc": "Primer vehículo exploratorio operativo en Marte."
+        },
+        {
+            "id": "genome",
+            "cat": "science",
+            "title": "Genoma Humano",
+            "start": 2003,
+            "desc": "Se completa la secuenciación del ADN humano."
+        },
+        {
+            "id": "higgs",
+            "cat": "science",
+            "title": "Bosón de Higgs",
+            "start": 2012,
+            "desc": "Se confirma la partícula que da masa a las demás."
+        },
+        {
+            "id": "gravitational-waves",
+            "cat": "science",
+            "title": "Ondas Gravitacionales",
+            "start": 2015,
+            "desc": "LIGO detecta por primera vez ondas en el espacio-tiempo."
+        },
+        {
+            "id": "black-hole",
+            "cat": "science",
+            "title": "Foto de un agujero negro",
+            "start": 2019,
+            "desc": "Event Horizon Telescope obtiene la primera imagen de M87*."
+        },
+        {
+            "id": "olympics-modern",
+            "cat": "sport",
+            "title": "Juegos Olímpicos modernos",
+            "start": 1896,
+            "desc": "Atenas: renacen los Juegos bajo iniciativa de Coubertin."
+        },
+        {
+            "id": "tour-france",
+            "cat": "sport",
+            "title": "Tour de Francia",
+            "start": 1903,
+            "desc": "Nace la carrera ciclística más icónica del mundo."
+        },
+        {
+            "id": "world-cup-1",
+            "cat": "sport",
+            "title": "Primer Mundial de Fútbol",
+            "start": 1930,
+            "desc": "Uruguay organiza y gana el primer Mundial FIFA."
+        },
+        {
+            "id": "jesse-owens",
+            "cat": "sport",
+            "title": "Jesse Owens en Berlín",
+            "start": 1936,
+            "desc": "Cuatro oros olímpicos frente a Hitler."
+        },
+        {
+            "id": "maracanazo",
+            "cat": "sport",
+            "title": "Maracanazo",
+            "start": 1950,
+            "desc": "Uruguay vence a Brasil en la final del Mundial."
+        },
+        {
+            "id": "bannister",
+            "cat": "sport",
+            "title": "Milla en menos de 4 min",
+            "start": 1954,
+            "desc": "Roger Bannister rompe la barrera de los 4 minutos."
+        },
+        {
+            "id": "pele-1958",
+            "cat": "sport",
+            "title": "Pelé debuta en Mundial",
+            "start": 1958,
+            "desc": "Con 17 años gana su primer Mundial."
+        },
+        {
+            "id": "maradona-86",
+            "cat": "sport",
+            "title": "Maradona Mundial 86",
+            "start": 1986,
+            "desc": "'La Mano de Dios' y el gol del siglo contra Inglaterra."
+        },
+        {
+            "id": "dream-team",
+            "cat": "sport",
+            "title": "Dream Team (Barcelona 92)",
+            "start": 1992,
+            "desc": "Jordan, Magic, Bird juntos en los JJOO."
+        },
+        {
+            "id": "bolt",
+            "cat": "sport",
+            "title": "Usain Bolt 9.58s",
+            "start": 2009,
+            "desc": "Récord mundial de 100m que sigue vigente."
+        },
+        {
+            "id": "messi-wc",
+            "cat": "sport",
+            "title": "Messi campeón del mundo",
+            "start": 2022,
+            "desc": "Argentina gana Qatar 2022 tras 36 años."
+        },
+        {
+            "id": "coca-cola",
+            "cat": "everyday",
+            "title": "Coca-Cola",
+            "start": 1886,
+            "desc": "Nace en Atlanta la bebida que conquistaría el mundo."
+        },
+        {
+            "id": "cine-sonoro",
+            "cat": "everyday",
+            "title": "Cine sonoro",
+            "start": 1927,
+            "desc": "'El cantor de jazz' inaugura la era del cine con sonido."
+        },
+        {
+            "id": "heladera",
+            "cat": "everyday",
+            "title": "Heladera eléctrica",
+            "start": 1927,
+            "desc": "General Electric lanza la primera heladera accesible para el hogar."
+        },
+        {
+            "id": "lavarropas",
+            "cat": "everyday",
+            "title": "Lavarropas eléctrico",
+            "start": 1937,
+            "desc": "Bendix lanza el primer lavarropas automático."
+        },
+        {
+            "id": "boligrafo",
+            "cat": "everyday",
+            "title": "Bolígrafo",
+            "start": 1938,
+            "desc": "László Bíró patenta la birome en Argentina."
+        },
+        {
+            "id": "jeans",
+            "cat": "everyday",
+            "title": "Jeans como moda",
+            "start": 1950,
+            "desc": "Levi's pasa de ropa de trabajo a símbolo cultural juvenil."
+        },
+        {
+            "id": "tv-color",
+            "cat": "everyday",
+            "title": "TV a color",
+            "start": 1954,
+            "desc": "RCA lanza el primer televisor color comercial en EEUU."
+        },
+        {
+            "id": "pildora",
+            "cat": "everyday",
+            "title": "Píldora anticonceptiva",
+            "start": 1960,
+            "desc": "La FDA aprueba la píldora, revolución para la mujer."
+        },
+        {
+            "id": "supermercado-arg",
+            "cat": "everyday",
+            "title": "Autoservicio en Argentina",
+            "start": 1961,
+            "desc": "Llega el formato supermercado moderno al país."
+        },
+        {
+            "id": "mcdonalds-global",
+            "cat": "everyday",
+            "title": "McDonald's se globaliza",
+            "start": 1967,
+            "desc": "Primer McDonald's fuera de EEUU (Canadá), inicio de la expansión global."
+        },
+        {
+            "id": "vhs",
+            "cat": "everyday",
+            "title": "VHS",
+            "start": 1976,
+            "desc": "JVC lanza el formato que llevó el cine a los hogares."
+        },
+        {
+            "id": "mtv",
+            "cat": "everyday",
+            "title": "MTV",
+            "start": 1981,
+            "desc": "La televisión musical redefine la cultura pop."
+        },
+        {
+            "id": "cd",
+            "cat": "everyday",
+            "title": "CD",
+            "start": 1982,
+            "desc": "El disco compacto reemplaza al vinilo y al casete."
+        },
+        {
+            "id": "dvd",
+            "cat": "everyday",
+            "title": "DVD",
+            "start": 1997,
+            "desc": "El DVD reemplaza al VHS en pocos años."
+        },
+        {
+            "id": "netflix-stream",
+            "cat": "everyday",
+            "title": "Netflix streaming",
+            "start": 2007,
+            "desc": "Netflix lanza streaming, comienza el fin del DVD."
+        },
+        {
+            "id": "whatsapp",
+            "cat": "everyday",
+            "title": "WhatsApp",
+            "start": 2009,
+            "desc": "La mensajería instantánea reemplaza al SMS."
+        },
+        {
+            "id": "rev-mayo",
+            "cat": "latam",
+            "title": "Revolución de Mayo",
+            "start": 1810,
+            "desc": "El Cabildo Abierto del 25 de mayo inicia el proceso de independencia del Río de la Plata."
+        },
+        {
+            "id": "independencias-latam",
+            "cat": "latam",
+            "title": "Independencias latinoamericanas",
+            "start": 1810,
+            "end": 1826,
+            "desc": "En 16 años casi toda América española se independiza. San Martín, Bolívar y Artigas lideran el proceso."
+        },
+        {
+            "id": "independencia-arg",
+            "cat": "latam",
+            "title": "Independencia Argentina",
+            "start": 1816,
+            "desc": "El Congreso de Tucumán declara la independencia de las Provincias Unidas en Sud América el 9 de julio."
+        },
+        {
+            "id": "constitucion-arg",
+            "cat": "latam",
+            "title": "Constitución Argentina",
+            "start": 1853,
+            "desc": "Argentina sanciona su constitución, organizando el Estado federal y sentando las bases del país moderno."
+        },
+        {
+            "id": "inmigracion-masiva",
+            "cat": "latam",
+            "title": "Inmigración masiva (Arg)",
+            "start": 1880,
+            "end": 1914,
+            "desc": "Llegan 4 millones de inmigrantes europeos que transforman la demografía, cultura y economía argentina."
+        },
+        {
+            "id": "rev-mexicana",
+            "cat": "latam",
+            "title": "Revolución Mexicana",
+            "start": 1910,
+            "end": 1920,
+            "desc": "Diez años de guerra civil que transformaron México y definieron el concepto de revolución social en América."
+        },
+        {
+            "id": "saenz-pena",
+            "cat": "latam",
+            "title": "Voto universal (Argentina)",
+            "start": 1912,
+            "desc": "La Ley Sáenz Peña establece el voto secreto y obligatorio para los hombres argentinos."
+        },
+        {
+            "id": "reforma-univ",
+            "cat": "latam",
+            "title": "Reforma Universitaria",
+            "start": 1918,
+            "desc": "Córdoba: los estudiantes conquistan la autonomía universitaria. El movimiento se expande por toda América Latina."
+        },
+        {
+            "id": "primer-golpe-arg",
+            "cat": "latam",
+            "title": "Primer golpe militar (Arg)",
+            "start": 1930,
+            "desc": "Uriburu derroca a Yrigoyen. Inicio de décadas de inestabilidad institucional en Argentina."
+        },
+        {
+            "id": "peronismo",
+            "cat": "latam",
+            "title": "Primer peronismo",
+            "start": 1946,
+            "end": 1955,
+            "desc": "Perón y Evita transforman el Estado: derechos laborales, sufragio femenino, industrialización."
+        },
+        {
+            "id": "houssay-nobel",
+            "cat": "latam",
+            "title": "Nobel de Houssay",
+            "start": 1947,
+            "desc": "Bernardo Houssay gana el Nobel de Fisiología: primer latinoamericano en ganar un Nobel científico."
+        },
+        {
+            "id": "voto-femenino-arg",
+            "cat": "latam",
+            "title": "Voto femenino (Argentina)",
+            "start": 1947,
+            "desc": "Evita Perón impulsa la ley que otorga a las mujeres argentinas el derecho al voto."
+        },
+        {
+            "id": "tv-argentina",
+            "cat": "latam",
+            "title": "TV en Argentina",
+            "start": 1951,
+            "desc": "Canal 7 realiza la primera transmisión televisiva del país, con el discurso de Evita desde el balcón."
+        },
+        {
+            "id": "rev-cubana",
+            "cat": "latam",
+            "title": "Revolución Cubana",
+            "start": 1959,
+            "desc": "Fidel Castro toma el poder. Primer estado socialista del hemisferio, redefine la geopolítica latinoamericana."
+        },
+        {
+            "id": "golpe-chile-73",
+            "cat": "latam",
+            "title": "Golpe en Chile",
+            "start": 1973,
+            "desc": "Pinochet derroca a Allende. Inicio de dictaduras coordinadas en el Cono Sur bajo el Plan Cóndor."
+        },
+        {
+            "id": "favaloro-bypass",
+            "cat": "latam",
+            "title": "Favaloro: bypass coronario",
+            "start": 1967,
+            "desc": "René Favaloro realiza la primera cirugía de bypass coronario de la historia, un hito de la medicina mundial."
+        },
+        {
+            "id": "mundial-78",
+            "cat": "latam",
+            "title": "Mundial Argentina 1978",
+            "start": 1978,
+            "desc": "Argentina organiza y gana su primer Mundial FIFA, en plena dictadura militar."
+        },
+        {
+            "id": "dictadura-arg",
+            "cat": "latam",
+            "title": "Dictadura en Argentina",
+            "start": 1976,
+            "end": 1983,
+            "desc": "El golpe del 24 de marzo instaura el Proceso de Reorganización Nacional. 30.000 detenidos-desaparecidos."
+        },
+        {
+            "id": "democracia-arg",
+            "cat": "latam",
+            "title": "Retorno democrático (Arg)",
+            "start": 1983,
+            "desc": "Raúl Alfonsín asume el 10 de diciembre, restaurando la democracia tras siete años de dictadura."
+        },
+        {
+            "id": "hiperinflacion-arg",
+            "cat": "latam",
+            "title": "Hiperinflación (Argentina)",
+            "start": 1989,
+            "desc": "Inflación del 3.000% anual. Estallido social y saqueos llevan a la renuncia anticipada de Alfonsín."
+        },
+        {
+            "id": "crisis-2001-arg",
+            "cat": "latam",
+            "title": "Crisis de 2001 (Argentina)",
+            "start": 2001,
+            "desc": "El corralito, el estallido del 19 y 20 de diciembre y cinco presidentes en una semana."
+        },
+        {
+            "id": "afa-fundacion",
+            "cat": "futbol",
+            "title": "Fundación de la AFA",
+            "start": 1893,
+            "desc": "Se funda la Asociación del Fútbol Argentino, una de las federaciones de fútbol más antiguas del mundo."
+        },
+        {
+            "id": "futbol-profesional",
+            "cat": "futbol",
+            "title": "Fútbol profesional en Argentina",
+            "start": 1931,
+            "desc": "El fútbol argentino se profesionaliza. Los jugadores empiezan a cobrar por jugar, transformando el deporte en industria."
+        },
+        {
+            "id": "copa-america-1921",
+            "cat": "futbol",
+            "title": "Primera Copa América",
+            "start": 1921,
+            "desc": "Argentina gana su primer campeonato sudamericano en Buenos Aires, consolidando su hegemonía continental."
+        },
+        {
+            "id": "mundial-1930",
+            "cat": "futbol",
+            "title": "Argentina subcampeón mundial",
+            "start": 1930,
+            "desc": "En el primer Mundial de la historia (Uruguay), Argentina llega a la final pero pierde 4-2 ante el equipo local."
+        },
+        {
+            "id": "mundial-1978",
+            "cat": "futbol",
+            "title": "Argentina campeón mundial 1978",
+            "start": 1978,
+            "desc": "Argentina gana su primer Mundial en casa. Kempes grita, el país explota. Opacado por el contexto de la dictadura."
+        },
+        {
+            "id": "gol-del-siglo",
+            "cat": "futbol",
+            "title": "El gol del siglo — Maradona",
+            "start": 1986,
+            "desc": "En el Mundial de México, Maradona anota ante Inglaterra el considerado mejor gol de la historia del fútbol. También 'La mano de Dios'."
+        },
+        {
+            "id": "mundial-1986",
+            "cat": "futbol",
+            "title": "Argentina campeón mundial 1986",
+            "start": 1986,
+            "desc": "Con Maradona como figura única, Argentina derrota a Alemania Occidental 3-2 en el Azteca y conquista su segunda estrella."
+        },
+        {
+            "id": "copa-america-2021",
+            "cat": "futbol",
+            "title": "Copa América 2021 — Messi",
+            "start": 2021,
+            "desc": "Argentina rompe 28 años sin títulos. Messi levanta su primer trofeo con la selección mayor en el Maracaná."
+        },
+        {
+            "id": "mundial-2022",
+            "cat": "futbol",
+            "title": "Argentina campeón mundial 2022",
+            "start": 2022,
+            "desc": "En Qatar, en la que muchos llaman la mejor final de la historia, Argentina vence a Francia en penales. La tercera estrella. El sueño de Messi cumplido."
+        },
+        {
+            "id": "river-fundacion",
+            "cat": "futbol",
+            "title": "Fundación River Plate",
+            "start": 1901,
+            "desc": "Nace el Club Atlético River Plate en La Boca. Uno de los clubes más grandes del mundo, con 36 campeonatos nacionales."
+        },
+        {
+            "id": "racing-fundacion",
+            "cat": "futbol",
+            "title": "Fundación Racing Club",
+            "start": 1903,
+            "desc": "Nace en Avellaneda el Racing Club, 'La Academia'. Primer club argentino en ser campeón del mundo en 1967."
+        },
+        {
+            "id": "boca-fundacion",
+            "cat": "futbol",
+            "title": "Fundación Boca Juniors",
+            "start": 1905,
+            "desc": "Nace Boca Juniors en La Boca, fundado por inmigrantes genoveses. Hoy es uno de los clubes más populares del planeta."
+        },
+        {
+            "id": "independiente-fundacion",
+            "cat": "futbol",
+            "title": "Fundación Independiente",
+            "start": 1905,
+            "desc": "Nace el Club Atlético Independiente en Avellaneda. El 'Rey de Copas': 7 Libertadores, un récord histórico mundial."
+        },
+        {
+            "id": "sanlorenzo-fundacion",
+            "cat": "futbol",
+            "title": "Fundación San Lorenzo",
+            "start": 1908,
+            "desc": "Nace el Club Atlético San Lorenzo de Almagro en el barrio de Almagro, fundado por el cura Lorenzo Massa."
+        },
+        {
+            "id": "indep-lib-6465",
+            "cat": "futbol",
+            "title": "Independiente: 1ras Libertadores",
+            "start": 1964,
+            "end": 1965,
+            "desc": "Independiente gana sus dos primeras Copas Libertadores consecutivas, iniciando la mayor dynasty de América."
+        },
+        {
+            "id": "racing-lib-67",
+            "cat": "futbol",
+            "title": "Racing Club: Libertadores 1967",
+            "start": 1967,
+            "desc": "Racing Club gana su única Copa Libertadores venciendo a Nacional de Uruguay. Mismo año conquista el Intercontinental."
+        },
+        {
+            "id": "estudiantes-lib-6870",
+            "cat": "futbol",
+            "title": "Estudiantes: 3 Libertadores",
+            "start": 1968,
+            "end": 1970,
+            "desc": "Estudiantes de La Plata gana tres Copas Libertadores consecutivas (1968, 1969, 1970), un logro irrepetible."
+        },
+        {
+            "id": "indep-lib-7275",
+            "cat": "futbol",
+            "title": "Independiente: 4 consecutivas",
+            "start": 1972,
+            "end": 1975,
+            "desc": "Independiente conquista cuatro Libertadores seguidas (1972, 1973, 1974, 1975). Ningún club repitió jamás esta hazaña."
+        },
+        {
+            "id": "boca-lib-7778",
+            "cat": "futbol",
+            "title": "Boca Juniors: Libertadores 77-78",
+            "start": 1977,
+            "end": 1978,
+            "desc": "Boca Juniors gana dos Libertadores consecutivas (1977 y 1978) con figuras como Hugo Gatti y Miguel Brindisi."
+        },
+        {
+            "id": "indep-lib-84",
+            "cat": "futbol",
+            "title": "Independiente: 7ª Libertadores",
+            "start": 1984,
+            "desc": "Independiente conquista su séptima Copa Libertadores, un récord histórico que ningún club del mundo ha igualado."
+        },
+        {
+            "id": "argentinos-lib-85",
+            "cat": "futbol",
+            "title": "Argentinos Juniors: Libertadores",
+            "start": 1985,
+            "desc": "Argentinos Juniors — el club que formó a Maradona — gana la Copa Libertadores 1985, su mayor logro internacional."
+        },
+        {
+            "id": "river-lib-86",
+            "cat": "futbol",
+            "title": "River Plate: Libertadores 1986",
+            "start": 1986,
+            "desc": "River Plate gana su primera Copa Libertadores venciendo a América de Cali, con Norberto Alonso y Ramón Díaz."
+        },
+        {
+            "id": "velez-lib-94",
+            "cat": "futbol",
+            "title": "Vélez Sársfield: Libertadores",
+            "start": 1994,
+            "desc": "Vélez Sársfield gana la Copa Libertadores 1994 venciendo a São Paulo, el único título continental de su historia."
+        },
+        {
+            "id": "river-lib-96",
+            "cat": "futbol",
+            "title": "River Plate: Libertadores 1996",
+            "start": 1996,
+            "desc": "River conquista su segunda Libertadores con Ortega y Crespo. Año de gloria para el club de Núñez."
+        },
+        {
+            "id": "boca-lib-200001",
+            "cat": "futbol",
+            "title": "Boca Juniors: Libertadores 00-01",
+            "start": 2000,
+            "end": 2001,
+            "desc": "Boca de Bianchi gana dos Libertadores consecutivas (2000 y 2001) con Riquelme, Palermo y Tevez. Era dorada."
+        },
+        {
+            "id": "boca-lib-2003",
+            "cat": "futbol",
+            "title": "Boca Juniors: Libertadores 2003",
+            "start": 2003,
+            "desc": "Boca gana su quinta Libertadores venciendo a Santos (Brasil). Riquelme regresa y es figura del torneo."
+        },
+        {
+            "id": "boca-lib-2007",
+            "cat": "futbol",
+            "title": "Boca Juniors: Libertadores 2007",
+            "start": 2007,
+            "desc": "Boca conquista su sexta Copa Libertadores, igualando a Independiente como los más ganadores de Argentina."
+        },
+        {
+            "id": "sanlorenzo-lib-2014",
+            "cat": "futbol",
+            "title": "San Lorenzo: Libertadores 2014",
+            "start": 2014,
+            "desc": "San Lorenzo gana su primera Copa Libertadores venciendo a Nacional de Paraguay. El Papa Francisco, hincha del club, festeja desde el Vaticano."
+        },
+        {
+            "id": "river-lib-2015",
+            "cat": "futbol",
+            "title": "River Plate: Libertadores 2015",
+            "start": 2015,
+            "desc": "River de Gallardo gana su tercera Libertadores con un equipo brillante. El Millonario inicia su era más gloriosa."
+        },
+        {
+            "id": "river-lib-2018",
+            "cat": "futbol",
+            "title": "River Plate: Libertadores 2018",
+            "start": 2018,
+            "desc": "River vence a Boca 3-1 en el Bernabéu en la final más esperada de la historia. La 'Superfinale' de la Libertadores."
+        },
+        {
+            "id": "racing-intercon-67",
+            "cat": "futbol",
+            "title": "Racing: Campeón del Mundo 1967",
+            "start": 1967,
+            "desc": "Racing Club vence al Celtic escocés y se convierte en el primer club argentino en ser campeón intercontinental."
+        },
+        {
+            "id": "estudiantes-intercon-68",
+            "cat": "futbol",
+            "title": "Estudiantes: Campeón del Mundo 1968",
+            "start": 1968,
+            "desc": "Estudiantes derrota al Manchester United de Best, Charlton y Law en un partido legendario y polémico."
+        },
+        {
+            "id": "indep-intercon-73",
+            "cat": "futbol",
+            "title": "Independiente: Campeón del Mundo",
+            "start": 1973,
+            "desc": "Independiente vence a la Juventus 1-0 y conquista el Intercontinental, el único de su historia."
+        },
+        {
+            "id": "river-intercon-86",
+            "cat": "futbol",
+            "title": "River: Campeón del Mundo 1986",
+            "start": 1986,
+            "desc": "River Plate derrota a Steaua Bucharest y suma la Copa Intercontinental a su primera Libertadores. Año de doble gloria."
+        },
+        {
+            "id": "velez-intercon-94",
+            "cat": "futbol",
+            "title": "Vélez: Campeón del Mundo 1994",
+            "start": 1994,
+            "desc": "Vélez Sársfield vence al AC Milan de Capello por penales. Doble corona Libertadores-Intercontinental en el mismo año."
+        },
+        {
+            "id": "boca-intercon-2000",
+            "cat": "futbol",
+            "title": "Boca: Campeón del Mundo 2000",
+            "start": 2000,
+            "desc": "Boca Juniors derrota al Real Madrid de Figo y Zidane 2-1 en Tokio. El gran Palermo sella la victoria xeneize."
+        },
+        {
+            "id": "river-maquina",
+            "cat": "futbol",
+            "title": "River: 'La Máquina'",
+            "start": 1941,
+            "end": 1947,
+            "desc": "River Plate arma el equipo más brillante de su historia: Muñoz, Moreno, Pedernera, Labruna y Loustau. Dominan el fútbol argentino."
+        },
+        {
+            "id": "boca-era-bianchi",
+            "cat": "futbol",
+            "title": "Boca: Era Bianchi",
+            "start": 1998,
+            "end": 2004,
+            "desc": "Carlos Bianchi lleva a Boca a ganar 2 Intercontinentales, 3 Libertadores y múltiples títulos locales. La mejor etapa de la historia xeneize."
+        },
+        {
+            "id": "river-era-gallardo",
+            "cat": "futbol",
+            "title": "River: Era Gallardo",
+            "start": 2014,
+            "end": 2022,
+            "desc": "Marcelo Gallardo convierte a River en el equipo más ganador de América: 2 Libertadores, 1 Supercopa, 1 Recopa y múltiples títulos locales."
+        }
+    ],
+    "periods": [
+        {
+            "id": "ind_industrial",
+            "title": "Revolución Industrial",
+            "start": 1760,
+            "end": 1840,
+            "group": "mundo",
+            "desc": "La mecanización de la producción transformó la economía, la sociedad y el trabajo. Surgieron las fábricas, el ferrocarril y las ciudades industriales."
+        },
+        {
+            "id": "era_napoleonica",
+            "title": "Era Napoleónica",
+            "start": 1799,
+            "end": 1815,
+            "group": "mundo",
+            "desc": "Napoleón reorganizó Europa y exportó los ideales de la Revolución Francesa, redibujando el mapa del mundo occidental."
+        },
+        {
+            "id": "belle_epoque",
+            "title": "Belle Époque",
+            "start": 1871,
+            "end": 1914,
+            "group": "mundo",
+            "desc": "Paz, prosperidad y optimismo en Europa. Auge de la ciencia, el arte y los derechos civiles antes de la Gran Guerra."
+        },
+        {
+            "id": "ww1_period",
+            "title": "Primera Guerra Mundial",
+            "start": 1914,
+            "end": 1918,
+            "group": "mundo",
+            "desc": "El primer conflicto de escala global. Redibujó el mapa de Europa y el Medio Oriente, y dejó 20 millones de muertos."
+        },
+        {
+            "id": "entreguerras",
+            "title": "Entreguerras",
+            "start": 1918,
+            "end": 1939,
+            "group": "mundo",
+            "desc": "Entre las dos guerras: Gran Depresión, ascenso del fascismo y el nazismo, crisis de las democracias liberales."
+        },
+        {
+            "id": "ww2_period",
+            "title": "Segunda Guerra Mundial",
+            "start": 1939,
+            "end": 1945,
+            "group": "mundo",
+            "desc": "El conflicto más devastador de la historia: 70 millones de muertos, el Holocausto y el inicio de la era nuclear."
+        },
+        {
+            "id": "guerra_fria",
+            "title": "Guerra Fría",
+            "start": 1947,
+            "end": 1991,
+            "group": "mundo",
+            "desc": "La tensión global entre EE.UU. y la URSS dividió al mundo en dos bloques: carrera armamentista, espacial e ideológica."
+        },
+        {
+            "id": "era_espacial",
+            "title": "Era Espacial",
+            "start": 1957,
+            "end": 1972,
+            "group": "mundo",
+            "desc": "De Sputnik a la Luna en 15 años. La exploración espacial capturó la imaginación del mundo y aceleró el desarrollo tecnológico."
+        },
+        {
+            "id": "era_digital",
+            "title": "Era Digital",
+            "start": 1990,
+            "end": 2010,
+            "group": "mundo",
+            "desc": "Internet, el celular y la web transformaron la comunicación, el trabajo y la cultura global en apenas dos décadas."
+        },
+        {
+            "id": "arg_inmigracion",
+            "title": "Inmigración masiva",
+            "start": 1880,
+            "end": 1914,
+            "group": "argentina",
+            "desc": "Millones de europeos llegaron a Argentina. El país duplicó su población y construyó su identidad multicultural."
+        },
+        {
+            "id": "arg_peronismo",
+            "title": "Primer Peronismo",
+            "start": 1946,
+            "end": 1955,
+            "group": "argentina",
+            "desc": "La presidencia de Perón transformó el Estado argentino, los derechos laborales y la relación entre el pueblo y el poder."
+        },
+        {
+            "id": "arg_dictadura",
+            "title": "Dictadura Argentina",
+            "start": 1976,
+            "end": 1983,
+            "group": "argentina",
+            "desc": "El Proceso de Reorganización Nacional: 30.000 desaparecidos, terrorismo de Estado y fin de las instituciones democráticas."
+        },
+        {
+            "id": "arg_democracia",
+            "title": "Recuperación democrática",
+            "start": 1983,
+            "end": 1995,
+            "group": "argentina",
+            "desc": "El retorno a la democracia con Alfonsín, el juicio a las juntas militares y la reconstrucción institucional."
+        }
+    ]
+}
