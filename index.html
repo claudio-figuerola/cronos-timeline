@@ -958,6 +958,184 @@
     .detail-panel { width: 100%; }
     .share-actions { grid-template-columns: 1fr; }
   }
+
+  /* ── DATASET BAR ────────────────────────────────────────── */
+  .dataset-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .dataset-bar-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-right: 4px;
+    white-space: nowrap;
+  }
+  .ds-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--ink-dim);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .ds-chip.active {
+    border-color: var(--amber);
+    color: var(--amber);
+    background: rgba(212, 162, 76, 0.06);
+  }
+  .ds-chip:not(.active):hover { border-color: var(--ink-faint); color: var(--ink); }
+  .ds-chip-del {
+    font-size: 14px;
+    line-height: 1;
+    opacity: 0.4;
+    margin-left: 2px;
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    padding: 0;
+  }
+  .ds-chip-del:hover { opacity: 1; }
+  .ds-add-btn {
+    padding: 6px 14px;
+    border: 1px dashed var(--line);
+    background: transparent;
+    color: var(--ink-faint);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .ds-add-btn:hover { border-color: var(--amber); color: var(--amber); }
+
+  /* ── GENERATE MODAL ─────────────────────────────────────── */
+  .gen-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(18, 17, 15, 0.85);
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s;
+  }
+  .gen-overlay.open { opacity: 1; pointer-events: all; }
+  .gen-modal {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    width: 560px;
+    max-width: 95vw;
+    padding: 40px;
+    position: relative;
+  }
+  .gen-modal .close {
+    position: absolute;
+    top: 16px; right: 20px;
+    background: none; border: none;
+    color: var(--ink-dim); font-size: 24px;
+    cursor: pointer; line-height: 1;
+  }
+  .gen-modal-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--amber);
+    margin-bottom: 24px;
+  }
+  .gen-field {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    padding: 14px 16px;
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+  }
+  .gen-field:focus { border-color: var(--amber); }
+  .gen-field::placeholder { color: var(--ink-faint); font-style: italic; }
+  .gen-hint {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--ink-faint);
+    letter-spacing: 0.08em;
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  .gen-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--amber);
+    border: none;
+    color: var(--bg);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-bottom: 16px;
+  }
+  .gen-btn:hover:not(:disabled) { background: var(--amber-bright); }
+  .gen-btn:disabled { opacity: 0.5; cursor: wait; }
+  .gen-status {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--ink-dim);
+    letter-spacing: 0.1em; text-align: center;
+    min-height: 18px;
+  }
+  .gen-status.error { color: var(--rust); }
+  .gen-result {
+    display: none;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--sage);
+    padding: 16px 20px;
+    margin-top: 16px;
+    margin-bottom: 12px;
+  }
+  .gen-result.show { display: block; }
+  .gen-result-title {
+    font-size: 17px; font-style: italic;
+    color: var(--ink); margin-bottom: 4px;
+  }
+  .gen-result-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--ink-faint);
+    letter-spacing: 0.1em;
+  }
+  .gen-save-btn {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: 1px solid var(--sage);
+    color: var(--sage);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .gen-save-btn:hover { background: rgba(122, 140, 106, 0.12); }
 </style>
 </head>
 <body>
@@ -998,6 +1176,33 @@
 <!-- Presentation exit button -->
 <button class="pres-exit" id="pres-exit">✕ salir</button>
 
+<!-- Generate dataset modal -->
+<div class="gen-overlay" id="gen-overlay">
+  <div class="gen-modal">
+    <button class="close" onclick="closeGenerateModal()">×</button>
+    <div class="gen-modal-title">✦ Generar nuevo dataset</div>
+    <input
+      class="gen-field"
+      id="gen-input"
+      type="text"
+      placeholder="Ej: Vida de Sarmiento 1811–1888, historia del rock argentino…"
+      onkeydown="if(event.key==='Enter') runGenerate()"
+    >
+    <div class="gen-hint">
+      Describí el tema, período o personaje. Cronos genera ~25 hitos curados automáticamente.
+    </div>
+    <button class="gen-btn" id="gen-btn" onclick="runGenerate()">Generar</button>
+    <div class="gen-status" id="gen-status"></div>
+    <div class="gen-result" id="gen-result">
+      <div class="gen-result-title" id="gen-result-title"></div>
+      <div class="gen-result-meta" id="gen-result-meta"></div>
+    </div>
+    <button class="gen-save-btn" id="gen-save-btn" onclick="saveGeneratedDataset()" style="display:none">
+      Guardar y activar este dataset
+    </button>
+  </div>
+</div>
+
 <!-- Share modal -->
 <div class="share-overlay" id="share-overlay">
   <div class="share-modal">
@@ -1034,6 +1239,13 @@ const state = {
   periods: [],
   theme: localStorage.getItem('cronos-theme') || 'light',
   fontSize: localStorage.getItem('cronos-fontsize') || 'md',
+  // Datasets
+  baseEvents: [],
+  baseCategories: {},
+  basePeriods: [],
+  activeDatasetId: 'default',
+  customDatasets: JSON.parse(localStorage.getItem('cronos-datasets') || '[]'),
+  _pendingDataset: null,
 };
 
 // =========================================================================
@@ -1044,9 +1256,14 @@ async function loadData() {
     const response = await fetch('./events.json');
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
-    state.events = data.events;
+    // Store base data permanently
+    state.baseEvents     = data.events;
+    state.baseCategories = data.categories;
+    state.basePeriods    = data.periods || [];
+    // Apply default dataset
+    state.events     = data.events;
     state.categories = data.categories;
-    state.periods = data.periods || [];
+    state.periods    = data.periods || [];
     state.activeCats = new Set(Object.keys(data.categories));
     bootUI();
   } catch (err) {
@@ -1563,6 +1780,7 @@ function bootUI() {
   ).join('');
 
   app.innerHTML = `
+    <div class="dataset-bar" id="dataset-bar"></div>
     <div class="controls">
       <div class="control-group">
         <label>Línea principal</label>
@@ -1673,6 +1891,7 @@ function bootUI() {
 
   attachListeners();
   initAppearance();
+  renderDatasetBar();
   render();
 }
 
@@ -2146,6 +2365,122 @@ function enterPresentation() {
 function exitPresentation() {
   document.body.classList.remove('presentation');
   if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+}
+
+// =========================================================================
+// DATASET MANAGEMENT
+// =========================================================================
+function saveCustomDatasets() {
+  localStorage.setItem('cronos-datasets', JSON.stringify(state.customDatasets));
+}
+
+function applyDataset(id) {
+  state.activeDatasetId = id;
+  if (id === 'default') {
+    state.events     = state.baseEvents;
+    state.categories = state.baseCategories;
+    state.periods    = state.basePeriods;
+  } else {
+    const ds = state.customDatasets.find(d => d.id === id);
+    if (!ds) return;
+    state.events     = ds.events;
+    state.categories = state.baseCategories; // reusar colores base
+    state.periods    = state.basePeriods;
+  }
+  state.activeCats = new Set(Object.keys(state.categories));
+  renderDatasetBar();
+  render();
+}
+
+function deleteCustomDataset(id) {
+  state.customDatasets = state.customDatasets.filter(d => d.id !== id);
+  saveCustomDatasets();
+  if (state.activeDatasetId === id) applyDataset('default');
+  else renderDatasetBar();
+}
+
+function renderDatasetBar() {
+  const bar = document.getElementById('dataset-bar');
+  if (!bar) return;
+  const chips = [
+    `<button class="ds-chip ${state.activeDatasetId === 'default' ? 'active' : ''}" onclick="applyDataset('default')">● Historia mundial</button>`,
+    ...state.customDatasets.map(ds =>
+      `<button class="ds-chip ${state.activeDatasetId === ds.id ? 'active' : ''}" onclick="applyDataset('${ds.id}')">
+        ${ds.title}
+        <button class="ds-chip-del" onclick="event.stopPropagation();deleteCustomDataset('${ds.id}')">×</button>
+      </button>`
+    ),
+    `<button class="ds-add-btn" onclick="openGenerateModal()">+ Generar dataset</button>`,
+  ];
+  bar.innerHTML = `<span class="dataset-bar-label">Fuente</span>` + chips.join('');
+}
+
+// =========================================================================
+// GENERATE MODAL
+// =========================================================================
+function openGenerateModal() {
+  state._pendingDataset = null;
+  const overlay = document.getElementById('gen-overlay');
+  overlay.classList.add('open');
+  document.getElementById('gen-input').value = '';
+  document.getElementById('gen-status').textContent = '';
+  document.getElementById('gen-status').className = 'gen-status';
+  document.getElementById('gen-result').classList.remove('show');
+  document.getElementById('gen-btn').disabled = false;
+  document.getElementById('gen-save-btn').style.display = 'none';
+  setTimeout(() => document.getElementById('gen-input').focus(), 100);
+}
+
+function closeGenerateModal() {
+  document.getElementById('gen-overlay').classList.remove('open');
+}
+
+async function runGenerate() {
+  const input = document.getElementById('gen-input');
+  const prompt = input.value.trim();
+  if (!prompt) { input.focus(); return; }
+
+  const btn    = document.getElementById('gen-btn');
+  const status = document.getElementById('gen-status');
+  const result = document.getElementById('gen-result');
+
+  btn.disabled = true;
+  status.className = 'gen-status';
+  status.textContent = 'Generando dataset…';
+  result.classList.remove('show');
+
+  try {
+    const res = await fetch('/api/generate-dataset', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Error desconocido');
+
+    state._pendingDataset = data;
+    status.textContent = '';
+    document.getElementById('gen-result-title').textContent = data.title;
+    document.getElementById('gen-result-meta').textContent =
+      `${data.events.length} hitos generados`;
+    result.classList.add('show');
+    document.getElementById('gen-save-btn').style.display = 'block';
+  } catch (err) {
+    status.className = 'gen-status error';
+    status.textContent = `Error: ${err.message}`;
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function saveGeneratedDataset() {
+  const ds = state._pendingDataset;
+  if (!ds) return;
+  const id = 'ds_' + Date.now();
+  state.customDatasets.push({ id, title: ds.title, events: ds.events });
+  saveCustomDatasets();
+  closeGenerateModal();
+  applyDataset(id);
 }
 
 loadData();
