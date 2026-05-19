@@ -2456,7 +2456,7 @@ async function runGenerate() {
       body: JSON.stringify({ prompt }),
     });
     const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Error desconocido');
+    if (!res.ok) throw new Error(data.error + (data.detail ? ` — ${data.detail}` : ''));
 
     state._pendingDataset = data;
     status.textContent = '';

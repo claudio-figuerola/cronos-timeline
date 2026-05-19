@@ -34,19 +34,13 @@ Respondé ÚNICAMENTE con este JSON (sin markdown, sin texto extra):
 Reglas:
 - Entre 20 y 30 eventos, ordenados cronológicamente por "start"
 - Categorías válidas SOLO: tech, war, science, sport, everyday, latam
-  - tech: inventos, tecnología, industria
-  - war: conflictos, revoluciones, guerras, golpes de estado
-  - science: ciencia, medicina, descubrimientos, educación
-  - sport: deportes, juegos olímpicos
-  - everyday: cultura, vida cotidiana, arte, política, sociedad
-  - latam: eventos específicos de América Latina / Argentina
-- Agregá "end": año SOLO si el evento duró más de 2 años (guerras, períodos, etc.)
+- Agregá "end": año SOLO si el evento duró más de 2 años
 - id: snake_case, sin espacios, sin tildes, único en el array
 - Descripciones en español, máximo 2 oraciones
 - No incluyas nada fuera del JSON`;
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const anthropicRes = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -54,20 +48,24 @@ Reglas:
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-3-haiku-20240307',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 4096,
         system: systemPrompt,
         messages: [{ role: 'user', content: userPrompt }],
       }),
     });
 
-    if (!response.ok) {
-      const errText = await response.text();
-      console.error('Anthropic API error:', errText);
-      return res.status(502).json({ error: 'Error al contactar la API de IA' });
+    const rawText = await anthropicRes.text();
+
+    if (!anthropicRes.ok) {
+      console.error(`Anthropic error ${anthropicRes.status}:`, rawText);
+      return res.status(502).json({
+        error: `Error de API (${anthropicRes.status})`,
+        detail: rawText,
+      });
     }
 
-    const data = await response.json();
+    const data = JSON.parse(rawText);
     const text = data.content[0].text.trim();
 
     let dataset;
@@ -78,8 +76,8 @@ Reglas:
       if (match) {
         dataset = JSON.parse(match[0]);
       } else {
-        console.error('Respuesta no parseable del modelo:', text);
-        return res.status(500).json({ error: 'El modelo devolvió una respuesta inválida' });
+        console.error('JSON inválido del modelo:', text);
+        return res.status(500).json({ error: 'El modelo devolvió una respuesta inválida', detail: text.slice(0, 200) });
       }
     }
 
