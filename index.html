@@ -1022,6 +1022,20 @@
     transition: all 0.15s;
   }
   .ds-add-btn:hover { border-color: var(--amber); color: var(--amber); }
+  .ds-share-btn {
+    padding: 6px 14px;
+    border: none;
+    background: transparent;
+    color: var(--ink-faint);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.15s;
+    margin-left: auto;
+  }
+  .ds-share-btn:hover { color: var(--amber); }
 
   /* ── GENERATE MODAL ─────────────────────────────────────── */
   .gen-overlay {
@@ -1323,6 +1337,7 @@ async function loadData() {
     state.periods    = data.periods || [];
     state.activeCats = new Set(Object.keys(data.categories));
     bootUI();
+    loadSharedFromURL();
   } catch (err) {
     document.getElementById('app').innerHTML = `
       <div class="error-state">
@@ -2469,7 +2484,58 @@ function renderDatasetBar() {
     ),
     `<button class="ds-add-btn" onclick="openGenerateModal()">+ Generar dataset</button>`,
   ];
+  if (state.activeDatasetId !== 'default') {
+    chips.push(`<button class="ds-share-btn" id="ds-share-btn" onclick="shareActiveDataset()">↗ compartir dataset</button>`);
+  }
   bar.innerHTML = `<span class="dataset-bar-label">Fuente</span>` + chips.join('');
+}
+
+// =========================================================================
+// SHARED DATASETS (server-side, link con ?d=)
+// =========================================================================
+async function shareActiveDataset() {
+  const ds = state.customDatasets.find(d => d.id === state.activeDatasetId);
+  if (!ds) return;
+  const btn = document.getElementById('ds-share-btn');
+  try {
+    if (!ds.sharedId) {
+      btn.textContent = 'guardando…';
+      const res = await fetch('/api/dataset', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: ds.title, events: ds.events }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Error al guardar');
+      ds.sharedId = data.id;
+      saveCustomDatasets();
+    }
+    const url = `${location.origin}${location.pathname}?d=${ds.sharedId}`;
+    await navigator.clipboard.writeText(url);
+    btn.textContent = '✓ link copiado';
+  } catch (err) {
+    console.error('Share error:', err);
+    btn.textContent = '⚠ no se pudo compartir';
+  }
+  setTimeout(renderDatasetBar, 2500);
+}
+
+async function loadSharedFromURL() {
+  const id = new URLSearchParams(location.search).get('d');
+  if (!id) return;
+  try {
+    const res = await fetch(`/api/dataset?id=${encodeURIComponent(id)}`);
+    if (!res.ok) return;
+    const ds = await res.json();
+    const localId = 'shared_' + id;
+    if (!state.customDatasets.find(d => d.id === localId)) {
+      state.customDatasets.push({ id: localId, title: ds.title, events: ds.events, sharedId: id });
+      saveCustomDatasets();
+    }
+    applyDataset(localId);
+  } catch (err) {
+    console.error('No se pudo cargar el dataset compartido:', err);
+  }
 }
 
 // =========================================================================
