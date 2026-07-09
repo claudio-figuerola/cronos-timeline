@@ -1,3 +1,37 @@
+// KV (Upstash Redis via Vercel Marketplace) — opcional.
+// Si las env vars no están, la función trabaja sin rate limit ni cache.
+const KV_URL   = process.env.KV_REST_API_URL   || process.env.UPSTASH_REDIS_REST_URL;
+const KV_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST_TOKEN;
+
+const RATE_LIMIT_PER_HOUR = 10;
+const CACHE_TTL_SECONDS   = 60 * 60 * 24 * 30; // 30 días
+
+async function kvPipeline(commands) {
+  if (!KV_URL || !KV_TOKEN) return null;
+  try {
+    const res = await fetch(`${KV_URL}/pipeline`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${KV_TOKEN}` },
+      body: JSON.stringify(commands),
+    });
+    if (!res.ok) {
+      console.error('KV pipeline error:', res.status, await res.text());
+      return null;
+    }
+    return await res.json();
+  } catch (err) {
+    console.error('KV unreachable:', err.message);
+    return null;
+  }
+}
+
+// "Vida de Sarmiento" y "vida de sarmiento " comparten cache
+function normalizePrompt(p) {
+  return p.trim().toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/\s+/g, ' ');
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método no permitido' });
@@ -11,6 +45,36 @@ export default async function handler(req, res) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     return res.status(500).json({ error: 'API key no configurada en el servidor' });
+  }
+
+  const ip = (req.headers['x-forwarded-for'] || 'unknown').split(',')[0].trim();
+  const hourWindow = Math.floor(Date.now() / 3600000);
+  const rlKey    = `rl:${ip}:${hourWindow}`;
+  const cacheKey = `cache:${normalizePrompt(prompt)}`;
+
+  // Rate limit + cache lookup en un solo round-trip
+  const kvResult = await kvPipeline([
+    ['INCR', rlKey],
+    ['EXPIRE', rlKey, String(3600)],
+    ['GET', cacheKey],
+  ]);
+
+  if (kvResult) {
+    const requestCount = kvResult[0]?.result;
+    if (requestCount > RATE_LIMIT_PER_HOUR) {
+      return res.status(429).json({
+        error: `Alcanzaste el límite de ${RATE_LIMIT_PER_HOUR} generaciones por hora. Probá de nuevo más tarde.`,
+      });
+    }
+    const cached = kvResult[2]?.result;
+    if (cached) {
+      try {
+        const dataset = JSON.parse(cached);
+        return res.status(200).json({ ...dataset, cached: true });
+      } catch {
+        // cache corrupto → regenerar
+      }
+    }
   }
 
   const systemPrompt = `Sos un historiador experto que genera datasets de hitos históricos para una aplicación de líneas de tiempo interactiva. Respondés ÚNICAMENTE con JSON válido, sin texto adicional, sin markdown, sin explicaciones.`;
@@ -84,6 +148,11 @@ Reglas:
     if (!dataset.events || !Array.isArray(dataset.events)) {
       return res.status(500).json({ error: 'Estructura de dataset inválida' });
     }
+
+    // Guardar en cache (best-effort, no bloquea la respuesta si falla)
+    await kvPipeline([
+      ['SET', cacheKey, JSON.stringify(dataset), 'EX', String(CACHE_TTL_SECONDS)],
+    ]);
 
     return res.status(200).json(dataset);
   } catch (err) {

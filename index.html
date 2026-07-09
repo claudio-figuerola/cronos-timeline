@@ -1122,6 +1122,44 @@
     font-size: 10px; color: var(--ink-faint);
     letter-spacing: 0.1em;
   }
+  .gen-events {
+    max-height: 240px;
+    overflow-y: auto;
+    margin-top: 14px;
+    border-top: 1px solid var(--line);
+  }
+  .gen-ev {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 7px 2px;
+    border-bottom: 1px solid var(--line);
+  }
+  .gen-ev-year {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--amber);
+    letter-spacing: 0.05em;
+    min-width: 72px;
+    flex-shrink: 0;
+  }
+  .gen-ev-title {
+    flex: 1;
+    font-size: 13px;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+  .gen-ev-del {
+    background: none;
+    border: none;
+    color: var(--ink-faint);
+    font-size: 15px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 4px;
+    flex-shrink: 0;
+  }
+  .gen-ev-del:hover { color: var(--rust); }
   .gen-save-btn {
     width: 100%;
     padding: 12px;
@@ -1196,6 +1234,7 @@
     <div class="gen-result" id="gen-result">
       <div class="gen-result-title" id="gen-result-title"></div>
       <div class="gen-result-meta" id="gen-result-meta"></div>
+      <div class="gen-events" id="gen-events"></div>
     </div>
     <button class="gen-save-btn" id="gen-save-btn" onclick="saveGeneratedDataset()" style="display:none">
       Guardar y activar este dataset
@@ -2426,6 +2465,7 @@ function openGenerateModal() {
   document.getElementById('gen-status').textContent = '';
   document.getElementById('gen-status').className = 'gen-status';
   document.getElementById('gen-result').classList.remove('show');
+  document.getElementById('gen-events').innerHTML = '';
   document.getElementById('gen-btn').disabled = false;
   document.getElementById('gen-save-btn').style.display = 'none';
   setTimeout(() => document.getElementById('gen-input').focus(), 100);
@@ -2459,10 +2499,9 @@ async function runGenerate() {
     if (!res.ok) throw new Error(data.error + (data.detail ? ` — ${data.detail}` : ''));
 
     state._pendingDataset = data;
-    status.textContent = '';
+    status.textContent = data.cached ? '⚡ Recuperado de la biblioteca — sin costo de generación' : '';
     document.getElementById('gen-result-title').textContent = data.title;
-    document.getElementById('gen-result-meta').textContent =
-      `${data.events.length} hitos generados`;
+    renderGenEvents();
     result.classList.add('show');
     document.getElementById('gen-save-btn').style.display = 'block';
   } catch (err) {
@@ -2473,9 +2512,37 @@ async function runGenerate() {
   }
 }
 
+function escHTML(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function renderGenEvents() {
+  const ds  = state._pendingDataset;
+  const box = document.getElementById('gen-events');
+  if (!ds || !ds.events.length) { box.innerHTML = ''; return; }
+  box.innerHTML = ds.events.map((ev, i) => `
+    <div class="gen-ev">
+      <span class="gen-ev-year">${ev.start}${ev.end ? '–' + ev.end : ''}</span>
+      <span class="gen-ev-title">${escHTML(ev.title)}</span>
+      <button class="gen-ev-del" onclick="removeGenEvent(${i})" title="Sacar este hito">×</button>
+    </div>
+  `).join('');
+  document.getElementById('gen-result-meta').textContent =
+    `${ds.events.length} hitos · sacá los que no van antes de guardar`;
+}
+
+function removeGenEvent(i) {
+  if (!state._pendingDataset) return;
+  state._pendingDataset.events.splice(i, 1);
+  renderGenEvents();
+  if (!state._pendingDataset.events.length) {
+    document.getElementById('gen-save-btn').style.display = 'none';
+  }
+}
+
 function saveGeneratedDataset() {
   const ds = state._pendingDataset;
-  if (!ds) return;
+  if (!ds || !ds.events.length) return;
   const id = 'ds_' + Date.now();
   state.customDatasets.push({ id, title: ds.title, events: ds.events });
   saveCustomDatasets();
