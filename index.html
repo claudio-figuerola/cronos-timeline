@@ -2749,6 +2749,13 @@ function setActivityLevel(level) {
 }
 
 function openActivityModal() {
+  state._activity = null;
+  const status = document.getElementById('act-status');
+  status.textContent = '';
+  status.className = 'gen-status';
+  document.getElementById('act-result').innerHTML = '';
+  document.getElementById('act-actions').style.display = 'none';
+  document.getElementById('act-btn').disabled = false;
   document.getElementById('act-overlay').classList.add('open');
 }
 
