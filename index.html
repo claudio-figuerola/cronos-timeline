@@ -1203,6 +1203,73 @@
     transition: color 0.15s;
   }
   .gen-regen-btn:hover { color: var(--amber); }
+
+  /* ── ACTIVITY MODAL ─────────────────────────────────────── */
+  .act-level-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .act-level-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+  }
+  .act-result {
+    max-height: 320px;
+    overflow-y: auto;
+    margin-bottom: 16px;
+  }
+  .act-result:not(:empty) {
+    border: 1px solid var(--line);
+    background: var(--bg);
+    padding: 20px 24px;
+  }
+  .act-title { font-size: 22px; font-weight: 400; font-style: italic; margin-bottom: 4px; }
+  .act-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; color: var(--ink-faint);
+    letter-spacing: 0.1em; margin-bottom: 18px;
+  }
+  .act-section h3, .act-answers h3 {
+    font-size: 15px; font-weight: 600;
+    margin: 16px 0 6px; color: var(--amber);
+  }
+  .act-answers h4 { font-size: 13px; font-weight: 600; margin: 10px 0 4px; }
+  .act-instr { font-size: 13px; color: var(--ink-dim); margin-bottom: 8px; line-height: 1.5; }
+  .act-result ol { padding-left: 22px; }
+  .act-result li { font-size: 13px; line-height: 1.6; margin-bottom: 4px; }
+  .act-answers {
+    margin-top: 20px; padding-top: 14px;
+    border-top: 1px dashed var(--line);
+  }
+  .act-answers li { color: var(--ink-dim); }
+
+  /* ── PRINT ──────────────────────────────────────────────── */
+  #print-area { display: none; }
+  @media print {
+    body.print-activity > *:not(#print-area) { display: none !important; }
+    body.print-activity::before, body.print-activity::after { display: none !important; }
+    body.print-activity { background: #fff; }
+    body.print-activity #print-area {
+      display: block;
+      color: #000;
+      background: #fff;
+      font-family: Georgia, 'Times New Roman', serif;
+      padding: 0;
+    }
+    #print-area .act-title { font-size: 22pt; margin-bottom: 4pt; font-style: italic; }
+    #print-area .act-meta { font-family: monospace; font-size: 9pt; color: #555; margin-bottom: 16pt; }
+    #print-area .act-section h3, #print-area .act-answers h3 { font-size: 13pt; margin: 14pt 0 4pt; }
+    #print-area .act-answers h4 { font-size: 11pt; margin: 8pt 0 2pt; }
+    #print-area .act-instr { font-size: 11pt; color: #333; margin-bottom: 6pt; }
+    #print-area ol { padding-left: 20pt; }
+    #print-area li { font-size: 11pt; line-height: 1.7; margin-bottom: 6pt; }
+    #print-area .print-break { page-break-before: always; border-top: none; }
+  }
 </style>
 </head>
 <body>
@@ -1273,6 +1340,34 @@
     </button>
   </div>
 </div>
+
+<!-- Activity modal -->
+<div class="gen-overlay" id="act-overlay">
+  <div class="gen-modal">
+    <button class="close" onclick="closeActivityModal()">×</button>
+    <div class="gen-modal-title">✎ Actividad para el aula</div>
+    <div class="act-level-row">
+      <span class="act-level-label">Nivel</span>
+      <div class="theme-btns">
+        <button class="theme-btn act-level-btn active" data-level="secundaria" onclick="setActivityLevel('secundaria')">Secundaria</button>
+        <button class="theme-btn act-level-btn" data-level="primaria" onclick="setActivityLevel('primaria')">Primaria</button>
+      </div>
+    </div>
+    <div class="gen-hint">
+      La actividad se arma con los hitos visibles del timeline: ordenamiento cronológico, verdadero/falso y preguntas abiertas, con respuestas para el docente.
+    </div>
+    <button class="gen-btn" id="act-btn" onclick="runActivity()">Generar actividad</button>
+    <div class="gen-status" id="act-status"></div>
+    <div class="act-result" id="act-result"></div>
+    <div class="share-actions" id="act-actions" style="display:none">
+      <button class="share-action" onclick="printActivity()">⎙ Imprimir</button>
+      <button class="share-action" id="act-copy" onclick="copyActivity()">Copiar texto</button>
+    </div>
+  </div>
+</div>
+
+<!-- Print area (solo visible al imprimir una actividad) -->
+<div id="print-area"></div>
 
 <!-- Share modal -->
 <div class="share-overlay" id="share-overlay">
@@ -1946,6 +2041,7 @@ function bootUI() {
         </div>
         <div class="timeline-header-right">
           <span class="count" id="event-count">0 hitos</span>
+          <button class="share-btn" onclick="openActivityModal()">✎ actividad</button>
           <button class="present-btn" id="present-btn">⊞ proyectar</button>
           <button class="share-btn" id="share-btn">↗ compartir</button>
         </div>
@@ -2635,6 +2731,143 @@ function saveGeneratedDataset() {
   saveCustomDatasets();
   closeGenerateModal();
   applyDataset(id);
+}
+
+// =========================================================================
+// TEACHER ACTIVITY
+// =========================================================================
+state._actLevel = 'secundaria';
+state._activity = null;
+
+function setActivityLevel(level) {
+  state._actLevel = level;
+  document.querySelectorAll('.act-level-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.level === level)
+  );
+}
+
+function openActivityModal() {
+  document.getElementById('act-overlay').classList.add('open');
+}
+
+function closeActivityModal() {
+  document.getElementById('act-overlay').classList.remove('open');
+}
+
+function getActiveDatasetTitle() {
+  if (state.activeDatasetId === 'default') return 'Historia mundial';
+  const ds = state.customDatasets.find(d => d.id === state.activeDatasetId);
+  return ds ? ds.title : '';
+}
+
+async function runActivity() {
+  const btn    = document.getElementById('act-btn');
+  const status = document.getElementById('act-status');
+
+  const visible = state.events.filter(e => state.activeCats.has(e.cat));
+  if (visible.length < 5) {
+    status.className = 'gen-status error';
+    status.textContent = 'Activá más categorías: se necesitan al menos 5 hitos visibles';
+    return;
+  }
+
+  const a = getAnchor();
+  btn.disabled = true;
+  status.className = 'gen-status';
+  status.textContent = 'Armando la actividad…';
+  document.getElementById('act-result').innerHTML = '';
+  document.getElementById('act-actions').style.display = 'none';
+
+  try {
+    const res = await fetch('/api/generate-activity', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        datasetTitle: getActiveDatasetTitle(),
+        context: `${a.title}: ${a.start}–${a.end}`,
+        level: state._actLevel,
+        events: visible.map(e => ({ title: e.title, start: e.start, end: e.end })),
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error + (data.detail ? ` — ${data.detail}` : ''));
+
+    state._activity = data;
+    status.textContent = '';
+    renderActivity();
+    document.getElementById('act-actions').style.display = 'grid';
+  } catch (err) {
+    status.className = 'gen-status error';
+    status.textContent = `Error: ${err.message}`;
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function activityHTML(forPrint) {
+  const act = state._activity;
+  if (!act) return '';
+  let html = `<h2 class="act-title">${escHTML(act.title)}</h2>`;
+  html += `<div class="act-meta">${escHTML(getActiveDatasetTitle())} · Nivel ${state._actLevel} · Cronos</div>`;
+
+  act.sections.forEach((sec, si) => {
+    html += `<div class="act-section">`;
+    html += `<h3>${si + 1}. ${escHTML(sec.title)}</h3>`;
+    if (sec.instrucciones) html += `<p class="act-instr">${escHTML(sec.instrucciones)}</p>`;
+    html += `<ol>${(sec.items || []).map(it => `<li>${escHTML(it)}</li>`).join('')}</ol>`;
+    html += `</div>`;
+  });
+
+  const withAnswers = act.sections.filter(s => s.respuestas && s.respuestas.length);
+  if (withAnswers.length) {
+    html += `<div class="act-answers${forPrint ? ' print-break' : ''}">`;
+    html += `<h3>Respuestas — para el docente</h3>`;
+    act.sections.forEach((sec, si) => {
+      if (!sec.respuestas || !sec.respuestas.length) return;
+      html += `<h4>${si + 1}. ${escHTML(sec.title)}</h4>`;
+      html += `<ol>${sec.respuestas.map(r => `<li>${escHTML(r)}</li>`).join('')}</ol>`;
+    });
+    html += `</div>`;
+  }
+  return html;
+}
+
+function renderActivity() {
+  document.getElementById('act-result').innerHTML = activityHTML(false);
+}
+
+function activityToText() {
+  const act = state._activity;
+  if (!act) return '';
+  let text = `${act.title}\n${getActiveDatasetTitle()} · Nivel ${state._actLevel} · Cronos\n\n`;
+  act.sections.forEach((sec, si) => {
+    text += `${si + 1}. ${sec.title}\n`;
+    if (sec.instrucciones) text += `${sec.instrucciones}\n`;
+    (sec.items || []).forEach((it, i) => { text += `   ${i + 1}) ${it}\n`; });
+    text += '\n';
+  });
+  text += `--- Respuestas (docente) ---\n`;
+  act.sections.forEach((sec, si) => {
+    if (!sec.respuestas || !sec.respuestas.length) return;
+    text += `${si + 1}. ${sec.title}\n`;
+    sec.respuestas.forEach((r, i) => { text += `   ${i + 1}) ${r}\n`; });
+  });
+  return text;
+}
+
+function printActivity() {
+  document.getElementById('print-area').innerHTML = activityHTML(true);
+  document.body.classList.add('print-activity');
+  window.print();
+  document.body.classList.remove('print-activity');
+}
+
+function copyActivity() {
+  navigator.clipboard.writeText(activityToText()).then(() => {
+    const btn = document.getElementById('act-copy');
+    btn.textContent = '✓ Copiado';
+    setTimeout(() => { btn.textContent = 'Copiar texto'; }, 2000);
+  });
 }
 
 loadData();
