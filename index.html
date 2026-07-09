@@ -84,7 +84,7 @@
     gap: 0;
     border: 1px solid var(--line);
   }
-  .theme-btn, .fontsize-btn {
+  .theme-btn, .fontsize-btn, .act-level-btn {
     padding: 7px 14px;
     background: transparent;
     border: none;
@@ -96,9 +96,10 @@
     transition: all 0.15s;
   }
   .theme-btn + .theme-btn,
-  .fontsize-btn + .fontsize-btn { border-left: 1px solid var(--line); }
-  .theme-btn.active, .fontsize-btn.active { background: var(--amber); color: var(--bg); }
-  .theme-btn:not(.active):hover, .fontsize-btn:not(.active):hover { color: var(--ink); }
+  .fontsize-btn + .fontsize-btn,
+  .act-level-btn + .act-level-btn { border-left: 1px solid var(--line); }
+  .theme-btn.active, .fontsize-btn.active, .act-level-btn.active { background: var(--amber); color: var(--bg); }
+  .theme-btn:not(.active):hover, .fontsize-btn:not(.active):hover, .act-level-btn:not(.active):hover { color: var(--ink); }
   .fontsize-btn[data-size="sm"] { font-size: 10px; }
   .fontsize-btn[data-size="lg"] { font-size: 13px; font-weight: 700; }
 
@@ -1349,8 +1350,8 @@
     <div class="act-level-row">
       <span class="act-level-label">Nivel</span>
       <div class="theme-btns">
-        <button class="theme-btn act-level-btn active" data-level="secundaria" onclick="setActivityLevel('secundaria')">Secundaria</button>
-        <button class="theme-btn act-level-btn" data-level="primaria" onclick="setActivityLevel('primaria')">Primaria</button>
+        <button class="act-level-btn active" data-level="secundaria" onclick="setActivityLevel('secundaria')">Secundaria</button>
+        <button class="act-level-btn" data-level="primaria" onclick="setActivityLevel('primaria')">Primaria</button>
       </div>
     </div>
     <div class="gen-hint">
@@ -1403,7 +1404,7 @@ const state = {
   events: [],
   categories: {},
   periods: [],
-  theme: localStorage.getItem('cronos-theme') || 'light',
+  theme: ['dark', 'light'].includes(localStorage.getItem('cronos-theme')) ? localStorage.getItem('cronos-theme') : 'light',
   fontSize: localStorage.getItem('cronos-fontsize') || 'md',
   // Datasets
   baseEvents: [],
@@ -2462,6 +2463,7 @@ function render() {
 // THEME & FONT SIZE
 // =========================================================================
 function setTheme(theme) {
+  if (theme !== 'dark' && theme !== 'light') return;
   document.body.classList.remove('theme-dark', 'theme-light');
   document.body.classList.add('theme-' + theme);
   state.theme = theme;
