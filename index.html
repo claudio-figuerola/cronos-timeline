@@ -1174,6 +1174,21 @@
     transition: all 0.2s;
   }
   .gen-save-btn:hover { background: rgba(122, 140, 106, 0.12); }
+  .gen-regen-btn {
+    width: 100%;
+    margin-top: 8px;
+    padding: 9px;
+    background: none;
+    border: none;
+    color: var(--ink-faint);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.15s;
+  }
+  .gen-regen-btn:hover { color: var(--amber); }
 </style>
 </head>
 <body>
@@ -1238,6 +1253,9 @@
     </div>
     <button class="gen-save-btn" id="gen-save-btn" onclick="saveGeneratedDataset()" style="display:none">
       Guardar y activar este dataset
+    </button>
+    <button class="gen-regen-btn" id="gen-regen" onclick="runGenerate(true)" style="display:none">
+      ↻ ¿No era esto? Generar de nuevo
     </button>
   </div>
 </div>
@@ -2468,6 +2486,7 @@ function openGenerateModal() {
   document.getElementById('gen-events').innerHTML = '';
   document.getElementById('gen-btn').disabled = false;
   document.getElementById('gen-save-btn').style.display = 'none';
+  document.getElementById('gen-regen').style.display = 'none';
   setTimeout(() => document.getElementById('gen-input').focus(), 100);
 }
 
@@ -2475,7 +2494,7 @@ function closeGenerateModal() {
   document.getElementById('gen-overlay').classList.remove('open');
 }
 
-async function runGenerate() {
+async function runGenerate(force) {
   const input = document.getElementById('gen-input');
   const prompt = input.value.trim();
   if (!prompt) { input.focus(); return; }
@@ -2488,12 +2507,13 @@ async function runGenerate() {
   status.className = 'gen-status';
   status.textContent = 'Generando dataset…';
   result.classList.remove('show');
+  document.getElementById('gen-regen').style.display = 'none';
 
   try {
     const res = await fetch('/api/generate-dataset', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt }),
+      body: JSON.stringify({ prompt, force: !!force }),
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error + (data.detail ? ` — ${data.detail}` : ''));
@@ -2504,6 +2524,7 @@ async function runGenerate() {
     renderGenEvents();
     result.classList.add('show');
     document.getElementById('gen-save-btn').style.display = 'block';
+    document.getElementById('gen-regen').style.display = data.cached ? 'block' : 'none';
   } catch (err) {
     status.className = 'gen-status error';
     status.textContent = `Error: ${err.message}`;

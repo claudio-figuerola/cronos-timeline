@@ -5,6 +5,47 @@ const KV_TOKEN = process.env.KV_REST_API_TOKEN || process.env.UPSTASH_REDIS_REST
 
 const RATE_LIMIT_PER_HOUR = 10;
 const CACHE_TTL_SECONDS   = 60 * 60 * 24 * 30; // 30 días
+const TOPICS_INDEX_KEY    = 'cache:v2:topics';
+
+// Palabras que no definen el tema: artículos, preposiciones, honoríficos
+// y muletillas tipo "vida de", "historia de". Así "Vida de Don José de
+// San Martín" y "José de San Martín" comparten la misma entrada de cache.
+const STOPWORDS = new Set([
+  'la', 'el', 'los', 'las', 'lo', 'un', 'una', 'unos', 'unas',
+  'de', 'del', 'y', 'e', 'o', 'u', 'a', 'al', 'en', 'con', 'por',
+  'para', 'sobre', 'entre', 'desde', 'hasta',
+  'vida', 'historia', 'biografia', 'cronologia', 'linea', 'tiempo',
+  'hitos', 'eventos', 'resumen', 'breve', 'quien', 'fue',
+  'don', 'dona', 'general', 'doctor', 'dr', 'fray',
+]);
+
+function normalizeTopic(p) {
+  const base = p.trim().toLowerCase()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .replace(/\s+/g, ' ').trim();
+  const words = base.split(' ').filter(w => w && !STOPWORDS.has(w));
+  return words.length ? words.join(' ') : base;
+}
+
+// "san martin" matchea "jose san martin": todas las palabras del pedido
+// están contenidas en un tema ya cacheado (o al revés). Mínimo 2 palabras
+// del lado corto para no matchear temas genéricos de una sola palabra.
+function findFuzzyTopic(topic, knownTopics) {
+  const words = new Set(topic.split(' '));
+  let best = null, bestDiff = Infinity;
+  for (const known of knownTopics) {
+    if (known === topic) continue;
+    const knownWords = new Set(known.split(' '));
+    const [small, big] = words.size <= knownWords.size
+      ? [words, knownWords] : [knownWords, words];
+    if (small.size < 2) continue;
+    if (![...small].every(w => big.has(w))) continue;
+    const diff = big.size - small.size;
+    if (diff < bestDiff) { bestDiff = diff; best = known; }
+  }
+  return best;
+}
 
 async function kvPipeline(commands) {
   if (!KV_URL || !KV_TOKEN) return null;
@@ -25,19 +66,12 @@ async function kvPipeline(commands) {
   }
 }
 
-// "Vida de Sarmiento" y "vida de sarmiento " comparten cache
-function normalizePrompt(p) {
-  return p.trim().toLowerCase()
-    .normalize('NFD').replace(/[̀-ͯ]/g, '')
-    .replace(/\s+/g, ' ');
-}
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método no permitido' });
   }
 
-  const { prompt } = req.body || {};
+  const { prompt, force } = req.body || {};
   if (!prompt || prompt.trim().length < 3) {
     return res.status(400).json({ error: 'Describí el tema del dataset' });
   }
@@ -50,13 +84,15 @@ export default async function handler(req, res) {
   const ip = (req.headers['x-forwarded-for'] || 'unknown').split(',')[0].trim();
   const hourWindow = Math.floor(Date.now() / 3600000);
   const rlKey    = `rl:${ip}:${hourWindow}`;
-  const cacheKey = `cache:${normalizePrompt(prompt)}`;
+  const topic    = normalizeTopic(prompt);
+  const cacheKey = `cache:v2:${topic}`;
 
-  // Rate limit + cache lookup en un solo round-trip
+  // Rate limit + cache exacto + índice de temas en un solo round-trip
   const kvResult = await kvPipeline([
     ['INCR', rlKey],
     ['EXPIRE', rlKey, String(3600)],
     ['GET', cacheKey],
+    ['SMEMBERS', TOPICS_INDEX_KEY],
   ]);
 
   if (kvResult) {
@@ -66,13 +102,26 @@ export default async function handler(req, res) {
         error: `Alcanzaste el límite de ${RATE_LIMIT_PER_HOUR} generaciones por hora. Probá de nuevo más tarde.`,
       });
     }
-    const cached = kvResult[2]?.result;
-    if (cached) {
-      try {
-        const dataset = JSON.parse(cached);
-        return res.status(200).json({ ...dataset, cached: true });
-      } catch {
-        // cache corrupto → regenerar
+
+    if (!force) {
+      // 1. Match exacto
+      const cached = kvResult[2]?.result;
+      if (cached) {
+        try {
+          return res.status(200).json({ ...JSON.parse(cached), cached: true });
+        } catch { /* cache corrupto → regenerar */ }
+      }
+      // 2. Match por contención de palabras
+      const knownTopics = kvResult[3]?.result || [];
+      const fuzzy = findFuzzyTopic(topic, knownTopics);
+      if (fuzzy) {
+        const fuzzyResult = await kvPipeline([['GET', `cache:v2:${fuzzy}`]]);
+        const hit = fuzzyResult?.[0]?.result;
+        if (hit) {
+          try {
+            return res.status(200).json({ ...JSON.parse(hit), cached: true });
+          } catch { /* seguir a generación */ }
+        }
       }
     }
   }
@@ -149,9 +198,10 @@ Reglas:
       return res.status(500).json({ error: 'Estructura de dataset inválida' });
     }
 
-    // Guardar en cache (best-effort, no bloquea la respuesta si falla)
+    // Guardar en cache + registrar el tema en el índice (best-effort)
     await kvPipeline([
       ['SET', cacheKey, JSON.stringify(dataset), 'EX', String(CACHE_TTL_SECONDS)],
+      ['SADD', TOPICS_INDEX_KEY, topic],
     ]);
 
     return res.status(200).json(dataset);
